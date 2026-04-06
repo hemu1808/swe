@@ -1,81 +1,57 @@
 "use client";
-import { useEffect, useRef } from "react";
+import React, { useRef, useMemo, Suspense } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Points, PointMaterial } from "@react-three/drei";
+import * as THREE from "three";
+
+function ParticleCloud() {
+  const ref = useRef<THREE.Points>(null);
+  const particleCount = 3000;
+
+  const positions = useMemo(() => {
+    const pos = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+        // Generating points in a loose sphere volume
+        const r = 15 * Math.cbrt(Math.random());
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos(2 * Math.random() - 1);
+        
+        pos[i * 3] = r * Math.sin(phi) * Math.cos(theta); // x
+        pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta); // y
+        pos[i * 3 + 2] = r * Math.cos(phi); // z
+    }
+    return pos;
+  }, [particleCount]);
+
+  useFrame((_state: any, delta: number) => {
+    if (ref.current) {
+        ref.current.rotation.x -= delta / 20;
+        ref.current.rotation.y -= delta / 30;
+    }
+  });
+
+  return (
+    <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
+      <PointMaterial
+        transparent
+        color="#3b82f6"
+        size={0.03}
+        sizeAttenuation={true}
+        depthWrite={false}
+        opacity={0.6}
+      />
+    </Points>
+  );
+}
 
 export const ParticleBackground = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles: { x: number; y: number; vx: number; vy: number }[] = [];
-    const particleCount = 60; // Adjust density
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-      });
-    }
-
-    let animationFrameId: number;
-    const animate = () => {
-      if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Update and draw particles
-      particles.forEach((p, i) => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Bounce off edges
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        // Draw Dot
-        ctx.fillStyle = "rgba(255, 65, 65, 0.85)";
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Draw Connections
-        for (let j = i; j < particles.length; j++) {
-          const dx = particles[j].x - p.x;
-          const dy = particles[j].y - p.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 150) {
-            ctx.strokeStyle = `rgba(59, 130, 246, ${0.25 - distance / 1000})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      });
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="fixed inset-0 -z-10 bg-background" />;
+  return (
+    <div className="fixed inset-0 -z-10 bg-transparent">
+      <Suspense fallback={null}>
+        <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 2]}>
+          <ParticleCloud />
+        </Canvas>
+      </Suspense>
+    </div>
+  );
 };

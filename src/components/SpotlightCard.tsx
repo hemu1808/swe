@@ -9,7 +9,7 @@ interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const SpotlightCard = ({ children, className, ...props }: SpotlightCardProps) => {
   const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  // [Commented out to prevent re-render trap] const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -18,7 +18,14 @@ export const SpotlightCard = ({ children, className, ...props }: SpotlightCardPr
     const div = divRef.current;
     const rect = div.getBoundingClientRect();
 
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Direct DOM mutation for performance
+    div.style.setProperty("--x", `${x}px`);
+    div.style.setProperty("--y", `${y}px`);
+    
+    // [Commented out] setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
   const handleFocus = () => {
@@ -56,8 +63,8 @@ export const SpotlightCard = ({ children, className, ...props }: SpotlightCardPr
         className="pointer-events-none absolute -inset-px opacity-0 transition duration-500"
         style={{
           opacity,
-          // Larger, softer gradient for a more premium feel
-          background: `radial-gradient(1000px circle at ${position.x}px ${position.y}px, rgba(255,255,255,0.04), transparent 40%)`,
+          // Larger, softer gradient for a more premium feel, using CSS variables
+          background: `radial-gradient(1000px circle at var(--x, 0px) var(--y, 0px), rgba(255,255,255,0.04), transparent 40%)`,
         }}
       />
       <div className="relative h-full">{children}</div>
