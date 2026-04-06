@@ -69,7 +69,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
             }}
             className="relative w-full mb-6 cursor-pointer group"
         >
-            <Link href={`/projects/${project.id}`} className="block relative w-full rounded-3xl border border-white/5 bg-zinc-950/40 p-[1px] overflow-visible backdrop-blur-xl transition-colors hover:bg-zinc-900/40">
+            <Link href={`/projects/${project.id}`} className="block relative w-full rounded-3xl border border-zinc-200 dark:border-white/5 bg-zinc-50/80 dark:bg-zinc-950/40 p-[1px] overflow-visible backdrop-blur-xl transition-colors hover:bg-white dark:hover:bg-zinc-900/40">
 
                 {/* Glow Hover Effects */}
                 <div
@@ -81,16 +81,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
                 {/* Inner Card Container */}
                 <div
-                    className="relative z-10 w-full rounded-[23px] bg-zinc-950/60 p-6 md:p-8 flex flex-col gap-8 shadow-2xl"
+                    className="relative z-10 w-full rounded-[23px] bg-white/90 dark:bg-zinc-950/60 p-6 md:p-8 flex flex-col gap-8 shadow-xl shadow-zinc-200/50 dark:shadow-2xl"
                     style={{ transform: "translateZ(10px)", transformStyle: "preserve-3d" }}
                 >
                     {/* Header / Title Row */}
                     <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                         <div className="max-w-2xl">
-                            <h3 className="text-2xl font-bold tracking-tight text-white mb-2 uppercase tracking-widest">
+                            <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white mb-2 uppercase tracking-widest">
                                 {project.title}
                             </h3>
-                            <p className="text-sm text-zinc-400 leading-relaxed font-medium">
+                            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">
                                 {project.description}
                             </p>
                         </div>
@@ -98,12 +98,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                         {/* Top Right Action Pills */}
                         <div className="flex items-center gap-3 shrink-0">
                             {project.gitLink && (
-                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-semibold text-zinc-300 hover:text-white transition-colors">
+                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-white/5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors">
                                     REPO <ArrowRight className="w-3 h-3" />
                                 </div>
                             )}
                             {project.liveLink && (
-                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-semibold text-zinc-300 hover:text-white transition-colors">
+                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-white/5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors">
                                     LIVE <ArrowRight className="w-3 h-3" />
                                 </div>
                             )}
@@ -112,11 +112,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
                     {/* What it does section */}
                     <div>
-                        <h4 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase mb-3">What it does</h4>
-                        <ul className="space-y-2 text-sm text-zinc-300 block">
+                        <h4 className="text-[10px] font-bold tracking-[0.2em] text-zinc-600 dark:text-zinc-500 uppercase mb-3">What it does</h4>
+                        <ul className="space-y-2 text-sm text-zinc-700 dark:text-zinc-300 block">
                             {project.highlights.slice(0, 3).map((highlight, i) => (
                                 <li key={i} className="flex gap-2">
-                                    <span className="text-zinc-500 mt-1">•</span>
+                                    <span className="text-zinc-400 dark:text-zinc-500 mt-1">•</span>
                                     <span className="leading-relaxed">{highlight}</span>
                                 </li>
                             ))}
@@ -125,30 +125,30 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
                     {/* Metadata Grid (Role, Time, Status, Focus) */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
-                        <div className="border border-white/10 bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-center">
-                            <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Role</span>
-                            <span className="text-sm text-zinc-200 font-medium">{project.role}</span>
+                        <div className="border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-center">
+                            <span className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-500 font-bold mb-1">Role</span>
+                            <span className="text-sm text-zinc-900 dark:text-zinc-200 font-medium">{project.role}</span>
                         </div>
-                        <div className="border border-white/10 bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-center">
-                            <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Time</span>
-                            <span className="text-sm text-zinc-200 font-medium">{project.duration}</span>
+                        <div className="border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-center">
+                            <span className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-500 font-bold mb-1">Time</span>
+                            <span className="text-sm text-zinc-900 dark:text-zinc-200 font-medium">{project.duration}</span>
                         </div>
-                        <div className="border border-white/10 bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-center">
-                            <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Status</span>
-                            <span className="text-sm text-zinc-200 font-medium">{project.status}</span>
+                        <div className="border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-center">
+                            <span className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-500 font-bold mb-1">Status</span>
+                            <span className="text-sm text-zinc-900 dark:text-zinc-200 font-medium">{project.status}</span>
                         </div>
-                        <div className="border border-white/10 bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-center">
-                            <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Focus</span>
-                            <span className="text-sm text-zinc-200 font-medium">{project.focus}</span>
+                        <div className="border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-center">
+                            <span className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-500 font-bold mb-1">Focus</span>
+                            <span className="text-sm text-zinc-900 dark:text-zinc-200 font-medium">{project.focus}</span>
                         </div>
                     </div>
 
                     {/* Tech Stack Chips */}
-                    <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
+                    <div className="flex flex-wrap gap-2 pt-2 border-t border-zinc-200 dark:border-white/5">
                         {project.techStack.map((tag) => (
                             <span
                                 key={tag}
-                                className="rounded-full border border-white/10 bg-transparent px-3 py-1 text-[11px] font-semibold tracking-wider text-zinc-400 uppercase"
+                                className="rounded-full border border-zinc-300 dark:border-white/10 bg-white dark:bg-transparent px-3 py-1 text-[11px] font-semibold tracking-wider text-zinc-600 dark:text-zinc-400 uppercase"
                             >
                                 {tag}
                             </span>

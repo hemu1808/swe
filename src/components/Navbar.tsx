@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { name: "About", href: "/#about" },
@@ -17,9 +18,9 @@ export const Navbar = () => {
       initial={{ y: -50, opacity: 0, x: "-50%" }}
       animate={{ y: 0, opacity: 1, x: "-50%" }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="fixed top-6 left-1/2 z-50 flex items-center justify-between gap-6 md:gap-12 rounded-full border border-white/10 bg-zinc-950/60 px-8 py-4 backdrop-blur-xl shadow-2xl"
+      className="fixed top-6 left-1/2 z-50 flex items-center justify-between gap-6 md:gap-12 rounded-full border border-zinc-200 dark:border-white/10 bg-white/80 dark:bg-zinc-950/60 px-8 py-4 backdrop-blur-xl shadow-lg dark:shadow-2xl"
     >
-      <Link href="/" className="text-xl font-bold tracking-tight text-white shrink-0">
+      <Link href="/" className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white shrink-0">
         Hemanth<span className="text-blue-500">.</span>
       </Link>
 
@@ -44,7 +45,7 @@ export const Navbar = () => {
           <Link
             key={item.name}
             href={item.href}
-            className="text-xs font-semibold uppercase tracking-widest text-zinc-400 transition-colors hover:text-white"
+            className="text-xs font-semibold uppercase tracking-widest text-zinc-400 transition-colors hover:text-white whitespace-nowrap"
           >
             {item.name}
           </Link>
@@ -52,7 +53,7 @@ export const Navbar = () => {
         {/* Showcase Link (Normal) */}
         <Link
           href="/showcase"
-          className="text-xs font-semibold uppercase tracking-widest text-zinc-400 transition-colors hover:text-white"
+          className="text-xs font-semibold uppercase tracking-widest text-zinc-400 transition-colors hover:text-white whitespace-nowrap"
         >
           Showcase 3D
         </Link>
@@ -99,10 +100,11 @@ export const Navbar = () => {
         </a>
         <a
           href="/resume.pdf"
-          className="relative inline-flex h-9 items-center justify-center overflow-hidden rounded-full bg-white px-5 text-xs font-bold uppercase tracking-widest text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-transform hover:scale-105 active:scale-95"
+          className="relative inline-flex h-9 items-center justify-center overflow-hidden rounded-full bg-white dark:bg-zinc-100 flex-shrink-0 px-5 text-xs font-bold uppercase tracking-widest text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-transform hover:scale-105 active:scale-95"
         >
           <span>Resume</span>
         </a>
+        <ThemeToggle />
       </div>
 
       {/* Mobile Socials */}

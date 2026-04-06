@@ -19,7 +19,7 @@ export default function ProjectsPage() {
     );
 
     return (
-        <div className="relative min-h-screen font-sans text-zinc-50 selection:bg-blue-500/30">
+        <div className="relative min-h-screen font-sans text-zinc-900 dark:text-zinc-50 selection:bg-blue-500/30">
             {/* Navigation */}
             <Navbar />
 
@@ -41,19 +41,19 @@ export default function ProjectsPage() {
 
                     <ScrollRevealText
                         text="Highlights"
-                        className="text-4xl md:text-5xl font-bold tracking-tighter text-white mb-4"
+                        className="text-4xl md:text-5xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-4"
                     />
 
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.8 }}
-                        className="max-w-2xl text-lg md:text-xl text-zinc-400 leading-relaxed"
+                        className="max-w-2xl text-lg md:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed"
                     >
                         A collection of engineering challenges I have tackled recently, spanning from
-                        <span className="text-zinc-200 font-medium"> distributed container orchestration</span> to
-                        <span className="text-zinc-200 font-medium"> high-concurrency booking engines</span> and
-                        <span className="text-zinc-200 font-medium"> enterprise RAG</span> systems.
+                        <span className="text-zinc-900 dark:text-zinc-200 font-medium"> distributed container orchestration</span> to
+                        <span className="text-zinc-900 dark:text-zinc-200 font-medium"> high-concurrency booking engines</span> and
+                        <span className="text-zinc-900 dark:text-zinc-200 font-medium"> enterprise RAG</span> systems.
                     </motion.p>
                 </header>
 

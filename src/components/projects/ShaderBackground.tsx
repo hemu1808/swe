@@ -3,6 +3,7 @@ import React, { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { ProjectCategory } from "@/data/projects";
+import { useTheme } from "next-themes";
 
 // Advanced Fluid Vertex Shader
 const vertexShader = `
@@ -145,31 +146,36 @@ const ShaderPlane: React.FC<ShaderPlaneProps> = ({ category }) => {
     const meshRef = useRef<THREE.Mesh>(null);
     const materialRef = useRef<THREE.ShaderMaterial>(null);
 
-    // Upgraded, highly saturated and vivid fluid palettes
+    const { resolvedTheme } = useTheme();
+
+    // Upgraded, highly saturated and vivid fluid palettes using specific depth color dependent on Theme
     const palettes: Record<ProjectCategory, [THREE.Color, THREE.Color, THREE.Color]> = useMemo(() => {
+        const isLight = resolvedTheme === "light";
+        const depth = isLight ? new THREE.Color("#f1f5f9") : new THREE.Color("#020617"); // Slate 100 vs Slate 950
+
         return {
             "All": [
                 new THREE.Color("#2563eb"), // Blue 600
                 new THREE.Color("#c026d3"), // Fuchsia 600
-                new THREE.Color("#020617"), // Slate 950 (Depth)
+                depth,
             ],
             "Backend & Systems": [
                 new THREE.Color("#059669"), // Emerald 600
                 new THREE.Color("#0ea5e9"), // Sky 500
-                new THREE.Color("#020617"), // Slate 950
+                depth,
             ],
             "Full Stack": [
                 new THREE.Color("#9333ea"), // Purple 600
                 new THREE.Color("#e11d48"), // Rose 600
-                new THREE.Color("#1f2937"), // Gray 800
+                depth,
             ],
             "AI & Data": [
                 new THREE.Color("#d97706"), // Amber 600
                 new THREE.Color("#b91c1c"), // Red 700
-                new THREE.Color("#171717"), // Neutral 900
+                depth,
             ],
         };
-    }, []);
+    }, [resolvedTheme]);
 
     // Set up uniforms
     const uniforms = useMemo(
@@ -212,7 +218,7 @@ const ShaderPlane: React.FC<ShaderPlaneProps> = ({ category }) => {
 
 export const ShaderBackground: React.FC<{ category: ProjectCategory }> = ({ category }) => {
     return (
-        <div className="fixed inset-0 -z-10 h-full w-full bg-zinc-950 overflow-hidden">
+        <div className="fixed inset-0 -z-10 h-full w-full bg-slate-50 dark:bg-zinc-950 overflow-hidden">
             <Canvas camera={{ position: [0, 0, 1.5], fov: 75 }} gl={{ antialias: false }}>
                 <ShaderPlane category={category} />
             </Canvas>

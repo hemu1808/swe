@@ -10,6 +10,7 @@ import { FoundationSection } from "@/components/showcase/FoundationSection";
 import { ArsenalSection } from "@/components/showcase/ArsenalSection";
 import { StrategicImpactSection } from "@/components/showcase/StrategicImpactSection";
 import { BentoShowcase } from "@/components/showcase/BentoShowcase";
+import { CreativeSection } from "@/components/showcase/CreativeSection";
 import { EndJourneySection } from "@/components/showcase/EndJourneySection";
 // --- Custom 3D Objects for Background Journey ---
 function FloatingNode({ position, color, speed, scale = 1 }: { position: [number, number, number], color: string, speed: number, scale?: number }) {
@@ -93,21 +94,34 @@ function HTMLContent() {
             <ArsenalSection />
             <StrategicImpactSection />
             <BentoShowcase />
+            <CreativeSection />
             <EndJourneySection />
         </Scroll>
     );
 }
 
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
+
 // --- Main Page Component ---
 export default function ShowcasePage() {
+    const { resolvedTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const canvasBg = mounted && resolvedTheme === "light" ? "#f8fafc" : "#050505"; // slate-50 or custom dark black
+
     return (
-        <div className="relative h-screen w-full bg-[#050505] overflow-hidden selection:bg-blue-500/30 font-sans">
+        <div className="relative h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden selection:bg-blue-500/30 font-sans transition-colors duration-500">
             {/* Global Floating Dock Header */}
             <Navbar />
 
             {/* Down Arrow Guide */}
             <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 pointer-events-none fade-in">
-                <div className="px-6 py-2 rounded-full border border-white/10 bg-zinc-950/60 backdrop-blur-md text-xs font-bold tracking-widest text-zinc-400 uppercase flex items-center gap-2 shadow-xl">
+                <div className="px-6 py-2 rounded-full border border-zinc-200 dark:border-white/10 bg-white/80 dark:bg-zinc-950/60 backdrop-blur-md text-xs font-bold tracking-widest text-zinc-600 dark:text-zinc-400 uppercase flex items-center gap-2 shadow-xl">
                     <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
                     Scroll Down
                 </div>
@@ -115,19 +129,19 @@ export default function ShowcasePage() {
 
             {/* Full Screen WebGL Canvas */}
             <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 2]}>
-                <color attach="background" args={['#050505']} />
+                <color attach="background" args={[canvasBg]} />
 
                 {/* Immersive Fog */}
-                <fog attach="fog" args={['#050505', 10, 45]} />
+                <fog attach="fog" args={[canvasBg, 10, 45]} />
 
-                <ambientLight intensity={0.2} />
-                <directionalLight position={[10, 10, 5]} intensity={1} />
+                <ambientLight intensity={mounted && resolvedTheme === "light" ? 0.8 : 0.2} />
+                <directionalLight position={[10, 10, 5]} intensity={mounted && resolvedTheme === "light" ? 1.5 : 1} />
 
                 <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
 
                 {/* 
                   ScrollControls manages the scroll state. 
-                  Pages=8 means the scroll height is 8x the viewport height. 
+                  Pages=8.5 means the scroll height is 8.5x the viewport height. 
                 */}
                 <ScrollControls pages={8.5} damping={0.2}>
                     <WebGLJourney />

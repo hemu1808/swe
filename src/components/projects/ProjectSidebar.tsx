@@ -21,22 +21,22 @@ export const ProjectSidebar: React.FC<SidebarProps> = ({ activeCategory, onSelec
                         <button
                             key={category}
                             onClick={() => onSelectCategory(category)}
-                            className={`relative flex items-center justify-between px-4 py-3 text-sm font-medium transition-colors rounded-xl overflow-hidden group whitespace-nowrap ${isActive ? "text-white bg-white/10" : "text-zinc-400 hover:text-white hover:bg-white/5"
+                            className={`relative flex items-center justify-between px-4 py-3 text-sm font-medium transition-colors rounded-xl overflow-hidden group whitespace-nowrap ${isActive ? "text-zinc-900 bg-white dark:text-white dark:bg-white/10 shadow-sm dark:shadow-none" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-white/5"
                                 }`}
                         >
                             <span className="relative z-10">{category}</span>
 
                             {isActive && (
-                                <span className="absolute inset-0 z-0 bg-blue-500/20 border border-blue-500/30 rounded-xl" />
+                                <span className="absolute inset-0 z-0 bg-blue-100/50 dark:bg-blue-500/20 border border-blue-500/10 dark:border-blue-500/30 rounded-xl" />
                             )}
                         </button>
                     );
                 })}
             </nav>
 
-            <div className="mt-8 pt-8 border-t border-white/10 hidden md:block">
-                <p className="text-xs text-zinc-500 leading-relaxed">
-                    Filter through my latest work focusing on <b>Distributed Systems</b>, <b>AI Integration</b>, and scalable <b>Full-Stack Development</b>.
+            <div className="mt-8 pt-8 border-t border-zinc-200 dark:border-white/10 hidden md:block">
+                <p className="text-xs text-zinc-600 dark:text-zinc-500 leading-relaxed">
+                    Filter through my latest work focusing on <b className="text-zinc-800 dark:text-zinc-300">Distributed Systems</b>, <b className="text-zinc-800 dark:text-zinc-300">AI Integration</b>, and scalable <b className="text-zinc-800 dark:text-zinc-300">Full-Stack Development</b>.
                 </p>
             </div>
         </aside>

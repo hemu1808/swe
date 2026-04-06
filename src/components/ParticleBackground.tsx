@@ -3,15 +3,16 @@ import React, { useRef, useMemo, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
+import { useTheme } from "next-themes";
 
 function ParticleCloud() {
   const ref = useRef<THREE.Points>(null);
+  const { resolvedTheme } = useTheme();
   const particleCount = 3000;
 
   const positions = useMemo(() => {
     const pos = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
-        // Generating points in a loose sphere volume
         const r = 15 * Math.cbrt(Math.random());
         const theta = Math.random() * 2 * Math.PI;
         const phi = Math.acos(2 * Math.random() - 1);
@@ -38,7 +39,7 @@ function ParticleCloud() {
         size={0.03}
         sizeAttenuation={true}
         depthWrite={false}
-        opacity={0.6}
+        opacity={resolvedTheme === "light" ? 0.2 : 0.6}
       />
     </Points>
   );
