@@ -34,6 +34,7 @@ export const projectsData: ProjectData[] = [
         ],
         techStack: ["Python", "LangChain", "ChromaDB", "Ollama", "React", "FastAPI", "Celery"],
         gitLink: "https://github.com/hemu1808/enterprise-rag",
+        liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7437262438103707649?compact=1",
         whyContent: `**Why HGPT?** Data privacy and vendor lock-in. Enterprise data cannot always be sent to OpenAI's APIs. By building a custom pipeline using local models via Ollama and ChromaDB, we guarantee zero data leakage. Furthermore, managed services charge heavily per token. A custom hybrid search strategy using local Cross-Encoder re-ranking achieves comparable 50% improved accuracy without the compounding API costs at scale.
 
 **The Hardest Challenge:** Tuning the chunking strategy. I implemented a parent-child hierarchy, meaning we search through small chunks for millimeter precision, but retrieve the larger surrounding document context for the LLM. It took significant tuning to get the balance right, but it made the generation far more coherent.`,
@@ -75,6 +76,7 @@ The Enterprise RAG Knowledge Base is built around a decoupled architecture desig
         ],
         techStack: ["Go", "PostgreSQL", "Docker", "REST API", "Grafana", "gRPC", "Prometheus"],
         gitLink: "https://github.com/hemu1808/container-orchestration",
+        liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7440106367673188352?compact=1",
         whyContent: `**Why Deploy.sh?** Because Kubernetes is massive, resource-heavy, and often overkill for specialized, resource-constrained environments. I essentially challenged myself to build a mini-cloud platform from scratch. I wrote the backend in Go because I needed it to be super fast. By engineering a custom Go scheduler using a Bin Packing algorithm, I improved hardware utilization by 25% without the heavy operational overhead of managing a full Kubernetes cluster.`,
         systemDesign: `
 ### System Architecture
@@ -110,6 +112,7 @@ A microservices-based distributed control plane built entirely in Go, mimicking 
         ],
         techStack: ["Node.js", "React", "React Native", "Redis", "MongoDB", "Stripe API", "AWS Amplify"],
         gitLink: "https://github.com/hemu1808/transit-reservation",
+        liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7440202396758237184?compact=1",
         whyContent: `**Why ShuttleNow?** ShuttleNow is a real-time ticket booking app I built using the MERN stack. The biggest technical hurdle was handling high concurrency—basically, what happens if two people try to book the exact same seat at the exact same second? To handle sudden spikes without crashing, I needed absolute control over the concurrency layer. By architecting a custom engine with Redis 'seat locking', I prevented about 95% of those double-booking conflicts.`,
         systemDesign: `
 ### System Architecture
