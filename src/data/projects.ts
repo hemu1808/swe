@@ -26,7 +26,7 @@ export const projectsData: ProjectData[] = [
         role: "Full-stack AI",
         status: "Active",
         focus: "Semantic Search",
-        description: "A Retrieval-Augmented Generation (RAG) system featuring real-time Server-Sent Events (SSE) streaming, Llama 3, and DSPy designed to handle 10K+ Documents.",
+        description: "An enterprise AI search engine that allows users to securely query 10,000+ internal documents in real-time, built with Llama 3 and a custom Retrieval-Augmented Generation (RAG) pipeline.",
         highlights: [
             "Implemented a hybrid search strategy using ChromaDB, BM25 for semantic vector retrieval, and Reciprocal Rank Fusion.",
             "Cross-Encoder re-ranking to maximize context relevance, improving accuracy by 50% over standard keyword search.",
@@ -66,7 +66,7 @@ The Enterprise RAG Knowledge Base is built around a decoupled architecture desig
         role: "Systems Engineer",
         status: "Completed",
         focus: "Cluster Resilience",
-        description: "A custom distributed control plane with a high-frequency gRPC heartbeat mechanism to manage and monitor containers.",
+        description: "A custom container orchestration platform, similar to a lightweight Kubernetes, designed to automatically monitor, scale, and recover failing server nodes in under 30ms.",
         highlights: [
             "Reduced node failure detection time to <30ms by engineering a custom distributed control plane in Go.",
             "Built a CLI and Dashboard utilizing Grafana to visualize real-time node metrics, exposing cluster state via RESTful API.",
@@ -291,6 +291,67 @@ A modular desktop application separating view models from multimedia handling lo
 **2. Architecture & UI Implementation**
 - Uses an **Event-Driven** control system where interactive widgets trigger asynchronous media commands.
 - Custom component styling engineered without massive UI libraries to keep the final executable incredibly lightweight and responsive.
+`
+    },
+    {
+        id: "facial-expression-recognition",
+        title: "Facial Expression Recognition with PyTorch",
+        category: "AI & Data",
+        duration: "Jun 2024 – Jun 2024",
+        description: "A machine learning project designed to accurately classify human facial expressions from images using a trained PyTorch model.",
+        role: "Machine Learning Engineer",
+        status: "Completed",
+        focus: "Computer Vision / Deep Learning",
+        highlights: [
+            "Preprocessing of facial images for robust feature extraction.",
+            "Training a convolutional neural network (CNN) for precise expression recognition.",
+            "Achieving high accuracy in classifying diverse expressions such as happiness, sadness, anger, and surprise."
+        ],
+        techStack: ["PyTorch", "Python", "Deep Learning", "CNN"],
+        whyContent: `**Why Facial Expression Recognition?** Associated with Auburn University at Montgomery, this project was an exciting deep dive into machine learning to classify human emotions from raw pixels. It highlights my proficiency in machine learning, deep learning, and computer vision architectures.`,
+        systemDesign: `
+### System Architecture
+
+**1. Data Preprocessing**
+- Cleaning and manipulating facial images to ensure proper alignment and normalize data distributions.
+
+**2. Deep Learning Modeling**
+- Built entirely within **PyTorch**, implementing a deep **Convolutional Neural Network (CNN)**.
+- Multiple layers engineered to capture nuanced edge and texture features defining distinct human expressions mathematically.
+`
+    },
+    {
+        id: "image-classifier-tensorflow",
+        title: "Image Classifier using Tensorflow",
+        category: "AI & Data",
+        duration: "Jun 2024 – Jun 2024",
+        description: "A comprehensive deep learning model building experience producing high validation accuracy by classifying images into organized folders.",
+        role: "Machine Learning Engineer",
+        status: "Completed",
+        focus: "Image Classification",
+        highlights: [
+            "Enhanced the dataset with robust data augmentation techniques to drastically improve model accuracy and robustness.",
+            "Built and trained a convolutional neural network (CNN) with optimized layers and dropout regularization.",
+            "Developed an automated pipeline to actively classify images and dynamically move them into respective category folders based on predictions.",
+            "Achieved high validation accuracy, ensuring reliable model performance on unseen test data."
+        ],
+        techStack: ["TensorFlow", "Keras", "Python", "Google Colab", "CNN"],
+        gitLink: "https://github.com/hemu1808/Random-files.git",
+        whyContent: `**What I Learned:**
+- The critical importance of balanced and well-preprocessed datasets.
+- Advanced techniques in CNN architecture design and hyperparameter tuning.
+- Practical implementation of machine learning models for real-world applications.
+
+I loved learning new things natively manipulating models using Google Colab, Keras, and TensorFlow. Tracking epochs and tuning hyperparameters in loops was a challenging yet highly rewarding experience!`,
+        systemDesign: `
+### System Architecture
+
+**1. Data Preprocessing & Augmentation**
+- Applying varied transformations explicitly to expand the dataset variation preventing overfitting and improving real-world generalization.
+
+**2. CNN Model Architecture & Automation**
+- Built on **TensorFlow** & **Keras**, introducing Dropouts selectively to penalize excessive weight correlations yielding excellent validation accuracy.
+- Enforced an automated OS-level script sorting output files directly matching prediction classes into local directories.
 `
     }
 ];

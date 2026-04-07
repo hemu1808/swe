@@ -7,6 +7,7 @@ import { SkillRadar } from "@/components/SkillRadar";
 import { ParticleWavesBackground } from "@/components/skills/ParticleWaves";
 import { Certifications } from "@/components/skills/Certifications";
 import { InsightsMedia } from "@/components/skills/InsightsMedia";
+import { SocialProof } from "@/components/skills/SocialProof";
 
 export default function SkillsPage() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -60,9 +61,9 @@ export default function SkillsPage() {
                 }}
             />
 
-            <main className="mx-auto max-w-6xl px-6 pb-20 pt-24 relative z-20">
+            <main className="mx-auto max-w-7xl px-6 pb-20 pt-32 relative z-20">
                 <header className="mb-12">
-                    <h1 className="text-3xl md:text-5xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-4">
+                    <h1 className="text-2xl md:text-4xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-4">
                         Skills & Technologies
                     </h1>
                     <p className="max-w-2xl text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -70,13 +71,21 @@ export default function SkillsPage() {
                     </p>
                 </header>
 
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="mb-12">
 
-                    <div className="space-y-8 relative group p-6 md:p-8 rounded-3xl border border-zinc-200 dark:border-white/5 bg-zinc-50/50 dark:bg-zinc-900/30 shadow-xl shadow-zinc-200/50 dark:shadow-none backdrop-blur">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 relative group p-6 md:p-10 rounded-3xl border border-zinc-200 dark:border-white/5 bg-zinc-50/50 dark:bg-zinc-900/30 shadow-xl shadow-zinc-200/50 dark:shadow-none backdrop-blur">
+                        <div>
+                            <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-3 border-b border-zinc-200 dark:border-white/10 pb-2">Frontend</h3>
+                            <div className="flex flex-wrap gap-2 mt-3">
+                                {["React", "TypeScript/JavaScript", "Next.js", "Redux", "HTML", "Tailwind CSS", "ComfyUI", "Figma", "Three.js", "Flask", "BeautifulSoup"].map(s => (
+                                    <span key={s} className="px-3 py-1.5 rounded-lg bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/10 shadow-sm dark:shadow-none transition-colors text-xs font-medium">{s}</span>
+                                ))}
+                            </div>
+                        </div>
                         <div>
                             <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-3 border-b border-zinc-200 dark:border-white/10 pb-2">Backend & Systems</h3>
                             <div className="flex flex-wrap gap-2 mt-3">
-                                {["Go (Golang)", "Python", "Node.js", "PostgreSQL", "MongoDB", "Redis", "gRPC", "WebSockets", "HashiCorp Raft", "Distributed Locking"].map(s => (
+                                {["Go (Golang)", "Python", "Node.js", "PostgreSQL", "MongoDB", "Redis", "gRPC", "WebSockets", "Distributed Locking"].map(s => (
                                     <span key={s} className="px-3 py-1.5 rounded-lg bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/10 shadow-sm dark:shadow-none transition-colors text-xs font-medium">{s}</span>
                                 ))}
                             </div>
@@ -94,29 +103,33 @@ export default function SkillsPage() {
                         <div>
                             <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-3 border-b border-zinc-200 dark:border-white/10 pb-2">AI & Machine Learning</h3>
                             <div className="flex flex-wrap gap-2 mt-3">
-                                {["LangChain", "Vector DBs (Chroma)", "Ollama", "PyTorch", "DSPy", "Llama 3", "BM25", "Cross-Encoders", "RRF"].map(s => (
+                                {["LangChain", "Vector DBs (Chroma, Pinecone)", "Hugging Face", "Ollama", "PyTorch", "DSPy", "Llama 3", "BM25", "Cross-Encoders", "Reciprocal Rank Fusion", "RAG", "LLM Agents", "TensorFlow", "Matplotlib", "Pandas", "NumPy", "Scikit-learn"].map(s => (
                                     <span key={s} className="px-3 py-1.5 rounded-lg bg-purple-50 dark:bg-purple-500/10 border border-purple-200 dark:border-purple-500/20 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-500/20 shadow-sm dark:shadow-none transition-colors text-xs font-medium">{s}</span>
                                 ))}
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div className="flex flex-col gap-8">
-                        <div className="p-6 md:p-8 rounded-3xl border border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-zinc-900/30 shadow-xl shadow-zinc-200/50 dark:shadow-none backdrop-blur min-h-[350px] flex flex-col justify-center items-center">
-                            <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-6 self-start">Skill Distribution</h3>
-                            <SkillRadar />
+                <SocialProof />
+                <Certifications />
+                <InsightsMedia />
+
+                <div className="grid md:grid-cols-[5fr_2fr] gap-8 mt-16 mb-8">
+                    <div className="p-6 md:p-8 rounded-3xl border border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-zinc-900/30 shadow-xl shadow-zinc-200/50 dark:shadow-none backdrop-blur min-h-[350px] flex flex-col justify-center items-center">
+                        <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-8 self-start border-b border-zinc-200 dark:border-white/10 pb-2 w-full text-left">Engineering Workflow</h3>
+                        <div className="w-full flex-1">
+                            <FlowChart />
                         </div>
                     </div>
 
+                    <div className="p-6 md:p-10 rounded-3xl border border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-zinc-900/30 shadow-xl shadow-zinc-200/50 dark:shadow-none backdrop-blur min-h-[350px] flex flex-col justify-center items-center">
+                        <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-8 self-start border-b border-zinc-200 dark:border-white/10 pb-2 w-full text-left">Skill Distribution</h3>
+                        <div className="w-full flex-1">
+                            <SkillRadar />
+                        </div>
+                    </div>
                 </div>
-
-                <div className="mt-12 p-8 rounded-3xl border border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-zinc-900/30 shadow-xl shadow-zinc-200/50 dark:shadow-none backdrop-blur w-full">
-                    <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-8">Engineering Workflow</h3>
-                    <FlowChart />
-                </div>
-
-                <Certifications />
-                <InsightsMedia />
 
             </main>
         </div>

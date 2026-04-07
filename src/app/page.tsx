@@ -40,9 +40,9 @@ export default function Home() {
                             &quot;Candid, driven by impact, and ready for high-stakes engineering. Humble, practical, honest, direct, and focused on the real-world problem.&quot;
                         </p>
 
-                        <p className="mt-6 max-w-5xl text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mx-auto">
+                        <p className="mt-6 max-w-7xl text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mx-auto">
                             M.S. in Computer Science at <b>Auburn University at Montgomery</b>.
-                            Full Stack Engineer specializing in scalable AI infrastructure, data analysis, and cross-platform development.
+                            Full-stack engineer with 2+ years of production experience, specializing in AI infrastructure, high-performance systems and data-driven product development. Experienced building real-time dashboards, and scalable backend infrastructure with a growing focus on experimentation, analytics, and growth engineering.
                         </p>
 
                         <div className="mt-12 flex gap-4">
@@ -94,7 +94,7 @@ export default function Home() {
                             {/* Education Card */}
                             <SpotlightCard className="flex flex-col justify-center p-8">
                                 <GraduationCap className="mb-4 h-8 w-8 text-blue-500" />
-                                <span className="text-lg font-bold text-zinc-900 dark:text-white leading-tight">Auburn University Montgomery <br /></span>
+                                <span className="text-lg font-normal text-zinc-900 dark:text-white leading-tight">Graduated from Auburn University at Montgomery <br /></span>
                                 <span className="text-xs text-zinc-600 dark:text-zinc-500 mt-5">M.S. Computer Science (May 2025)</span>
                             </SpotlightCard>
 

@@ -7,6 +7,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const navItems = [
   { name: "About", href: "/#about" },
   { name: "Skills", href: "/skills" },
+  { name: "Experience", href: "/experience" },
   { name: "Projects", href: "/projects" },
 ];
 
@@ -29,7 +30,7 @@ export const Navbar = () => {
 
       {/* Mobile Menu Button */}
       <button
-        className="md:hidden ml-auto text-zinc-400 hover:text-white transition-colors"
+        className="md:hidden ml-auto text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
       >
@@ -100,7 +101,7 @@ export const Navbar = () => {
         </a>
         <a
           href="/resume.pdf"
-          className="relative inline-flex h-9 items-center justify-center overflow-hidden rounded-full bg-white dark:bg-zinc-100 flex-shrink-0 px-5 text-xs font-bold uppercase tracking-widest text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-transform hover:scale-105 active:scale-95"
+          className="relative inline-flex h-9 items-center justify-center overflow-hidden rounded-full bg-zinc-900 text-white dark:bg-zinc-100 flex-shrink-0 px-5 text-xs font-bold uppercase tracking-widest dark:text-black shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-transform hover:scale-105 active:scale-95"
         >
           <span>Resume</span>
         </a>
