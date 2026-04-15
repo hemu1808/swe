@@ -87,7 +87,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                     {/* Header / Title Row */}
                     <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                         <div className="max-w-2xl">
-                            <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white mb-2 uppercase tracking-widest">
+                            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 uppercase tracking-widest">
                                 {project.title}
                             </h3>
                             <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">

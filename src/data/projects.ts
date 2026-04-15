@@ -15,6 +15,24 @@ export interface ProjectData {
     liveLink?: string;
     systemDesign?: string;
     whyContent?: string;
+    architecture?: {
+        image: string;
+        description: string;
+    };
+    videoUrl?: string;
+    insights?: {
+        title: string;
+        quote: string;
+        levels: {
+            title: string;
+            description: string;
+        }[];
+        reflection: string;
+        externalLink?: {
+            label: string;
+            url: string;
+        };
+    };
 }
 
 export const projectsData: ProjectData[] = [
@@ -37,7 +55,7 @@ export const projectsData: ProjectData[] = [
         liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7437262438103707649?compact=1",
         whyContent: `**Why HGPT?** Data privacy and vendor lock-in. Enterprise data cannot always be sent to OpenAI's APIs. By building a custom pipeline using local models via Ollama and ChromaDB, we guarantee zero data leakage. Furthermore, managed services charge heavily per token. A custom hybrid search strategy using local Cross-Encoder re-ranking achieves comparable 50% improved accuracy without the compounding API costs at scale.
 
-**The Hardest Challenge:** Tuning the chunking strategy. I implemented a parent-child hierarchy, meaning we search through small chunks for millimeter precision, but retrieve the larger surrounding document context for the LLM. It took significant tuning to get the balance right, but it made the generation far more coherent.`,
+**The Hardest Challenge:** Tuning the chunking strategy. I implemented a parent-child hierarchy, meaning we search through small chunks for millimeter precision, but retrieve the larger surrounding document context for the LLM. This made the generation far more coherent.`,
         systemDesign: `
 ### System Architecture
 
@@ -56,7 +74,39 @@ The Enterprise RAG Knowledge Base is built around a decoupled architecture desig
 **3. Observability & Caching**
 - To make this production-ready, **Redis** was added to cache repeated queries, driving response times down.
 - **Prometheus and Jaeger** are configured for observability, enabling exact bottleneck tracing if the inference pipeline slows.
-`
+`,
+        architecture: {
+            image: "/hgptpn.jpg",
+            description: "The Bottleneck: Relying solely on vector embeddings (ChromaDB) resulted in poor recall for specific keyword queries.\n\n### The Solution: I implemented a hybrid search pattern. Queries run in parallel against ChromaDB (semantic) and BM25 (lexical), fusing the results via Reciprocal Rank Fusion (RRF).\n\n### The Trade-off: To prevent garbage context from reaching the LLM, I added a cross-encoder to rerank the results. Because cross-encoders are computationally expensive, I strictly bound the reranking step to the top 20 documents, trading a ~300ms latency penalty for a massive spike in accuracy.\n\nIntegrated Celery for asynchronous document ingestion so the main event loop never blocks, and wired up Prometheus/Grafana for full observability."
+        },
+        videoUrl: "/hgptvideo.mp4",
+        insights: {
+            title: "The Reality of RAG",
+            quote: "An LLM-as-a-judge that agrees with itself is not an eval.",
+            levels: [
+                {
+                    title: "Level 1: LLM API Wrapper",
+                    description: "No tools, no architecture, no memory. Just passing prompts."
+                },
+                {
+                    title: "Level 2: Basic RAG",
+                    description: "Vector Retrieval. 90% of the industry is stuck here."
+                },
+                {
+                    title: "Level 3: Functional Agent",
+                    description: "Systems that can think, act, use external tools, and answer."
+                },
+                {
+                    title: "Level 4: Multi-Agent Reasoning",
+                    description: "Autonomous research, context management, and deep monitoring."
+                }
+            ],
+            reflection: "Getting from Level 2 to Level 4 requires serious engineering. When I built the HGPT RAG system, implementing hybrid retrieval (BM25 + Semantic), Reciprocal Rank Fusion, and cross-encoder reranking proved one thing: moving past basic vector search is expensive. The better your recall and reasoning, the higher your compute cost. This 'memory tax' is the biggest bottleneck in local AI architecture right now.",
+            externalLink: {
+                label: "Read the full breakdown on TurboQuant",
+                url: "https://lnkd.in/e8yb9nsZ"
+            }
+        }
     },
     {
         id: "container-orchestration",
@@ -93,7 +143,12 @@ A microservices-based distributed control plane built entirely in Go, mimicking 
 
 **3. WAL & Postgres Failover**
 - To prevent split-brain and ensure consistency if the Master Node crashes, all cluster state changes are appended to a **Write-Ahead Log (WAL)** stored in a master/slave **PostgreSQL** deployment.
-`
+`,
+        architecture: {
+            image: "/deploypn.png",
+            description: "The Bottleneck: Streaming live CPU/Memory metrics from a Go backend to a React frontend can easily cause aggressive DOM repaints, freezing the user's browser.\n\n### The Backend Architecture\nI utilized Go's concurrency model, running a background goroutine ticker that continuously updates system state in SQLite (using custom GORM interfaces to handle JSON arrays). The Go WebSocket Hub then broadcasts this payload instantly.\n\n### The Frontend Trade-off\nTo prevent UI freezing, I bypassed standard React state (useState/useReducer). I intercepted the WebSocket stream and fed the payload directly into the React Query cache (queryClient.setQueryData). This trades some frontend architecture flexibility for a highly optimized, polling-free DOM update cycle."
+        },
+        videoUrl: "/deployvideo.mp4"
     },
     {
         id: "transit-reservation",
@@ -113,7 +168,7 @@ A microservices-based distributed control plane built entirely in Go, mimicking 
         techStack: ["Node.js", "React", "React Native", "Redis", "MongoDB", "Stripe API", "AWS Amplify"],
         gitLink: "https://github.com/hemu1808/transit-reservation",
         liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7440202396758237184?compact=1",
-        whyContent: `**Why ShuttleNow?** ShuttleNow is a real-time ticket booking app I built using the MERN stack. The biggest technical hurdle was handling high concurrency—basically, what happens if two people try to book the exact same seat at the exact same second? To handle sudden spikes without crashing, I needed absolute control over the concurrency layer. By architecting a custom engine with Redis 'seat locking', I prevented about 95% of those double-booking conflicts.`,
+        whyContent: `**Why ShuttleNow?** ShuttleNow is a real-time ticket booking app I built using the MERN stack. The biggest technical hurdle was handling high concurrency, what happens if two people try to book the exact same seat at the exact same second? To handle sudden spikes without crashing, I needed absolute control over the concurrency layer. By architecting a custom engine with Redis 'seat locking', I prevented about 95% of those double-booking conflicts.`,
         systemDesign: `
 ### System Architecture
 
@@ -128,7 +183,12 @@ Handling thousands of concurrent users trying to book the exact same transit sea
 **3. Unified Frontend & CI/CD**
 - Since users are heavily on mobile, I used a unified UI approach with **React** and **React Native** so the experience is perfectly smooth across devices.
 - The entire system is bound to a full CI/CD pipeline on **AWS Amplify**, automatically building and updating the live site upon code push.
-`
+`,
+        architecture: {
+            image: "/shpn.png",
+            description: "The Bottleneck: Relying on standard database queries (MongoDB) for transient state (like a user simply clicking a seat) introduces latency and hammering the DB causes race conditions.\n\n### The Solution\nI decoupled the data layer. I built a dedicated WebSocket server utilizing an in-memory state object for \"soft locking.\" When User A clicks a seat, the Node server instantly broadcasts that lock to User B via Socket.IO before a database write ever occurs.\n\n### The Trade-off\nBy keeping transient state in memory, I traded higher Node server memory overhead for a massive reduction in database load and near-zero latency for the end user. MongoDB is strictly reserved as the final source of truth upon successful Stripe checkout."
+        },
+        videoUrl: "/shuttlevideo.mp4"
     },
     {
         id: "ecommerce-graphql",

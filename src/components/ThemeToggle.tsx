@@ -1,31 +1,27 @@
 "use client";
 
-import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
+import { useMounted } from "@/lib/useMounted";
 
 export function ThemeToggle() {
-    const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = React.useState(false);
+    const { resolvedTheme, setTheme } = useTheme();
+    const mounted = useMounted();
 
-    // Prevent hydration mismatch
-    React.useEffect(() => {
-        setMounted(true);
-    }, []);
-
+    // Prevent hydration mismatch — render placeholder until mounted
     if (!mounted) {
-        return <div className="w-9 h-9 rounded-full bg-zinc-800/50" />;
+        return <div className="w-9 h-9 rounded-full bg-zinc-200 dark:bg-zinc-800/50" />;
     }
 
-    const isLight = theme === "light";
+    const isLight = resolvedTheme === "light";
 
     return (
         <motion.button
             onClick={() => setTheme(isLight ? "dark" : "light")}
             className="relative flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/50 shadow-sm"
             whileTap={{ scale: 0.9 }}
-            aria-label="Toggle theme"
+            aria-label={`Switch to ${isLight ? "dark" : "light"} mode`}
         >
             <motion.div
                 initial={false}
@@ -53,7 +49,7 @@ export function ThemeToggle() {
                 <Moon className="w-5 h-5" />
             </motion.div>
             
-            {/* Background flourish ping */}
+            {/* Background flourish */}
             <motion.div 
                 className="absolute inset-0 rounded-full opacity-20 pointer-events-none"
                 animate={{

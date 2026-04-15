@@ -1,10 +1,12 @@
 "use client";
-import React, { useRef, Suspense } from "react";
+import React, { useRef } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ScrollControls, Scroll, useScroll, Stars, Float } from "@react-three/drei";
+import { ScrollControls, Scroll, useScroll, Stars, Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
-
+import { useTheme } from "next-themes";
+import { useMounted } from "@/lib/useMounted";
+import { motion } from "framer-motion";
 import { HeroSection } from "@/components/showcase/HeroSection";
 import { FoundationSection } from "@/components/showcase/FoundationSection";
 import { ArsenalSection } from "@/components/showcase/ArsenalSection";
@@ -25,7 +27,7 @@ function FloatingNode({ position, color, speed, scale = 1 }: { position: [number
         <Float speed={2} rotationIntensity={2} floatIntensity={2} position={position}>
             <mesh ref={mesh} scale={scale}>
                 <icosahedronGeometry args={[1, 0]} />
-                <meshStandardMaterial color={color} wireframe />
+                <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.5} wireframe />
             </mesh>
         </Float>
     );
@@ -100,17 +102,9 @@ function HTMLContent() {
     );
 }
 
-import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
-
-// --- Main Page Component ---
 export default function ShowcasePage() {
     const { resolvedTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-    
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const mounted = useMounted();
 
     const canvasBg = mounted && resolvedTheme === "light" ? "#f8fafc" : "#050505"; // slate-50 or custom dark black
 
@@ -120,12 +114,17 @@ export default function ShowcasePage() {
             <Navbar />
 
             {/* Down Arrow Guide */}
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 pointer-events-none fade-in">
+            <motion.div
+                initial={{ opacity: 0, x: "-50%", y: 20 }}
+                animate={{ opacity: 1, x: "-50%", y: 0 }}
+                transition={{ duration: 1, delay: 1 }}
+                className="fixed bottom-8 left-1/2 z-40 pointer-events-none"
+            >
                 <div className="px-6 py-2 rounded-full border border-zinc-200 dark:border-white/10 bg-white/80 dark:bg-zinc-950/60 backdrop-blur-md text-xs font-bold tracking-widest text-zinc-600 dark:text-zinc-400 uppercase flex items-center gap-2 shadow-xl">
                     <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
                     Scroll Down
                 </div>
-            </div>
+            </motion.div>
 
             {/* Full Screen WebGL Canvas */}
             <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 2]}>
@@ -138,6 +137,7 @@ export default function ShowcasePage() {
                 <directionalLight position={[10, 10, 5]} intensity={mounted && resolvedTheme === "light" ? 1.5 : 1} />
 
                 <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+                <Sparkles count={500} scale={20} size={3} speed={0.4} opacity={mounted && resolvedTheme === "light" ? 0.3 : 0.8} color={mounted && resolvedTheme === "light" ? "#3b82f6" : "#a78bfa"} />
 
                 {/* 
                   ScrollControls manages the scroll state. 

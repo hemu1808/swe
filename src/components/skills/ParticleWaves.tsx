@@ -2,6 +2,8 @@
 import React, { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { useTheme } from "next-themes";
+import { useMounted } from "@/lib/useMounted";
 
 const WaveParticles = () => {
     const pointsRef = useRef<THREE.Points>(null);
@@ -84,14 +86,22 @@ const WaveParticles = () => {
 };
 
 export const ParticleWavesBackground = () => {
+    const { resolvedTheme } = useTheme();
+    const mounted = useMounted();
+
+    const isLight = mounted && resolvedTheme === "light";
+    const bgColor = isLight ? "#f1f5f9" : "#020617";
+    const fogColor = isLight ? "#f1f5f9" : "#020617";
+
     return (
-        <div className="fixed inset-0 -z-20 h-full w-full bg-[#020617]"> {/* Slate 950 deep background */}
+        <div className={`fixed inset-0 -z-20 h-full w-full transition-colors duration-500 ${isLight ? 'bg-slate-100' : 'bg-[#020617]'}`}>
             <Canvas
                 camera={{ position: [0, 5, 10], fov: 75 }}
                 gl={{ antialias: false, alpha: false }}
             >
+                <color attach="background" args={[bgColor]} />
                 {/* Fog to obscure the edges smoothly */}
-                <fog attach="fog" args={['#020617', 5, 20]} />
+                <fog attach="fog" args={[fogColor, 5, 20]} />
                 <WaveParticles />
             </Canvas>
         </div>

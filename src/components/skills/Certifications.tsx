@@ -97,8 +97,8 @@ export function Certifications() {
             <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-8 border-b border-zinc-200 dark:border-white/10 pb-4">Licenses & Certifications</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {certs.map((c, i) => (
-                    <div key={i} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 rounded-3xl border border-zinc-200 dark:border-white/5 bg-white/80 dark:bg-zinc-900/30 shadow-lg shadow-zinc-200/50 dark:shadow-none backdrop-blur hover:bg-zinc-50 dark:hover:bg-zinc-900/50 hover:border-zinc-300 dark:hover:border-white/10 transition-colors gap-4">
-                        <div className="flex items-center gap-4">
+                    <div key={i} className="group flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 rounded-3xl border border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-zinc-900/30 shadow-xl shadow-zinc-200/50 dark:shadow-none backdrop-blur hover:bg-white/80 dark:hover:bg-zinc-900/50 transition-all duration-300 hover:-translate-y-1 hover:border-zinc-300 dark:hover:border-white/10 gap-4 overflow-hidden relative">
+                        <div className="relative z-10 flex items-center gap-4">
                             <div className={`p-3 rounded-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-white/5 shadow-inner ${c.color} shrink-0`}>
                                 <c.Icon className="w-6 h-6" />
                             </div>

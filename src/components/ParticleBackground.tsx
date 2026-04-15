@@ -22,7 +22,8 @@ function ParticleCloud() {
         pos[i * 3 + 2] = r * Math.cos(phi); // z
     }
     return pos;
-  }, [particleCount]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useFrame((_state: any, delta: number) => {
     if (ref.current) {

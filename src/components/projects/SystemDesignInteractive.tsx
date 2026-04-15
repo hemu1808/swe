@@ -6,6 +6,7 @@ import ReactFlow, { Background, BackgroundVariant, useNodesState, useEdgesState 
 import 'reactflow/dist/style.css';
 import { getSystemData } from '@/data/interactiveSystemData';
 import { useTheme } from 'next-themes';
+import { useMounted } from '@/lib/useMounted';
 
 export function SystemDesignInteractive({ projectId }: { projectId: string }) {
     const data = getSystemData(projectId);
@@ -15,11 +16,7 @@ export function SystemDesignInteractive({ projectId }: { projectId: string }) {
     const [edges, setEdges, onEdgesChange] = useEdgesState(data?.edges || []);
     const [activeNodeId, setActiveNodeId] = useState<string | null>(data?.nodes[0]?.id || null);
     const { resolvedTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const mounted = useMounted();
 
     useEffect(() => {
         if (!data) return;
@@ -45,8 +42,8 @@ export function SystemDesignInteractive({ projectId }: { projectId: string }) {
 
     return (
         <div className="mt-16 pt-16 border-t border-zinc-200 dark:border-white/10 w-full fade-in">
-            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8 flex items-center gap-3">
-                <Boxes className="w-6 h-6 text-blue-500" /> Interactive System Design
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2">
+                <Boxes className="w-5 h-5 text-blue-500" /> Interactive System Design
             </h3>
 
             <div className="grid lg:grid-cols-5 gap-8">

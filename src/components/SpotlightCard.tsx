@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { useMounted } from "@/lib/useMounted";
 
 interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -12,11 +13,7 @@ export const SpotlightCard = ({ children, className, ...props }: SpotlightCardPr
   const divRef = useRef<HTMLDivElement>(null);
   const [opacity, setOpacity] = useState(0);
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;

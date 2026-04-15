@@ -1,5 +1,6 @@
 import React from "react";
 import { Github, Linkedin } from "lucide-react";
+import { getAssetPath } from "@/lib/utils";
 
 export function FoundationSection() {
     return (
@@ -13,13 +14,13 @@ export function FoundationSection() {
                     My obsession lies in bridging complex system design with pixel-perfect user experiences.
                 </p>
                 <div className="flex flex-wrap items-center gap-4">
-                    <a href="/resume.pdf" className="inline-block px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-sm tracking-widest uppercase rounded-full hover:scale-105 transition-transform shadow-lg dark:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                    <a href={getAssetPath("/resume.pdf")} className="inline-block px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-sm tracking-widest uppercase rounded-full hover:scale-105 transition-transform shadow-lg dark:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                         View Complete Résumé
                     </a>
-                    <a href="https://github.com/hemu1808/" target="_blank" className="p-4 rounded-full bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 hover:bg-zinc-200/80 dark:hover:bg-white/10 transition-colors">
+                    <a href="https://github.com/hemu1808/" target="_blank" rel="noopener noreferrer" className="p-4 rounded-full bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 hover:bg-zinc-200/80 dark:hover:bg-white/10 transition-colors">
                         <Github className="w-5 h-5 text-zinc-900 dark:text-white" />
                     </a>
-                    <a href="https://www.linkedin.com/in/mangalapurapu/" target="_blank" className="p-4 rounded-full bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 hover:bg-zinc-200/80 dark:hover:bg-white/10 transition-colors">
+                    <a href="https://www.linkedin.com/in/mangalapurapu/" target="_blank" rel="noopener noreferrer" className="p-4 rounded-full bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 hover:bg-zinc-200/80 dark:hover:bg-white/10 transition-colors">
                         <Linkedin className="w-5 h-5 text-zinc-900 dark:text-white" />
                     </a>
                 </div>

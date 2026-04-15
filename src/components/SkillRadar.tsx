@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useMounted } from "@/lib/useMounted";
 
 // UPDATED SKILLS based on advanced Full Stack & AI Profile
 const skills = [
@@ -15,11 +15,7 @@ const skills = [
 
 export const SkillRadar = () => {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   const radius = 80;
   const center = 125;

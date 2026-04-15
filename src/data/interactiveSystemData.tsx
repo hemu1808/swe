@@ -1,6 +1,7 @@
 import { 
     Server, Cpu, Database, Network, Shield, Workflow, 
-    Smartphone, Zap, Lock, BookOpen, Layers, CreditCard
+    Smartphone, Zap, Lock, BookOpen, Layers, CreditCard,
+    type LucideIcon
 } from "lucide-react";
 import { Edge, Node } from "reactflow";
 
@@ -16,7 +17,7 @@ export type PanelData = {
     title: string;
     tech: string[];
     description: string;
-    icon: any;
+    icon: LucideIcon;
 };
 
 export type SystemData = {

@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils"; // Make sure you import 'cn' if you use it, or just use strings
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "800"] });
 
-import { ThemeProvider } from "@/components/ThemeProvider";
-
 export const metadata: Metadata = {
   title: "Hemanth Kumar | Portfolio",
-  description: "Full Stack Engineer",
+  description: "Full Stack Engineer specializing in AI infrastructure, distributed systems, and data-driven product development.",
 };
 
 export default function RootLayout({
@@ -25,6 +24,11 @@ export default function RootLayout({
           "bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 antialiased selection:bg-blue-500/30 overflow-x-hidden min-h-screen transition-colors duration-500"
         )}
       >
+        {/* Accessibility: Skip to main content */}
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
+
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -32,6 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           {children}
+
         </ThemeProvider>
       </body>
     </html>
