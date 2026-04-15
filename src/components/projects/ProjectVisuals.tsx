@@ -61,7 +61,7 @@ export function ArchitectureBlueprint({ architecture, categoryColor = "blue" }: 
                 <div className={`absolute -inset-2 rounded-2xl ${colors.bg} blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                 <div className="relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 shadow-lg">
                     <Image
-                        src={architecture.image}
+                        src={getAssetPath(architecture.image)}
                         alt="System Architecture"
                         width={400}
                         height={300}
@@ -106,7 +106,7 @@ export function ArchitectureBlueprint({ architecture, categoryColor = "blue" }: 
                             onClick={(e) => e.stopPropagation()}
                         >
                             <Image
-                                src={architecture.image}
+                                src={getAssetPath(architecture.image)}
                                 alt="System Architecture Full"
                                 fill
                                 className="object-contain"
