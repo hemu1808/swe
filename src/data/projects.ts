@@ -51,7 +51,7 @@ export const projectsData: ProjectData[] = [
             "Enabled high-performance ingestion pipeline using FastAPI and Celery workers to asynchronously process and chunk large datasets into embedded vectors with Chain-of-Thought reasoning without blocking the UI."
         ],
         techStack: ["Python", "LangChain", "ChromaDB", "Ollama", "React", "FastAPI", "Celery"],
-        gitLink: "https://github.com/hemu1808/enterprise-rag",
+        gitLink: "https://github.com/hemu1808/H_ollama_gpt",
         liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7437262438103707649?compact=1",
         whyContent: `**Why HGPT?** Data privacy and vendor lock-in. Enterprise data cannot always be sent to OpenAI's APIs. By building a custom pipeline using local models via Ollama and ChromaDB, we guarantee zero data leakage. Furthermore, managed services charge heavily per token. A custom hybrid search strategy using local Cross-Encoder re-ranking achieves comparable 50% improved accuracy without the compounding API costs at scale.
 
@@ -125,7 +125,7 @@ The Enterprise RAG Knowledge Base is built around a decoupled architecture desig
             "Improved hardware utilization by 25% by designing a custom scheduler using Bin Packing algorithm to optimize memory allocation across worker nodes."
         ],
         techStack: ["Go", "PostgreSQL", "Docker", "REST API", "Grafana", "gRPC", "Prometheus"],
-        gitLink: "https://github.com/hemu1808/container-orchestration",
+        gitLink: "https://github.com/hemu1808/Deploysh",
         liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7440106367673188352?compact=1",
         whyContent: `**Why Deploy.sh?** Because Kubernetes is massive, resource-heavy, and often overkill for specialized, resource-constrained environments. I essentially challenged myself to build a mini-cloud platform from scratch. I wrote the backend in Go because I needed it to be super fast. By engineering a custom Go scheduler using a Bin Packing algorithm, I improved hardware utilization by 25% without the heavy operational overhead of managing a full Kubernetes cluster.`,
         systemDesign: `
@@ -166,7 +166,7 @@ A microservices-based distributed control plane built entirely in Go, mimicking 
             "<50ms latency achieved by integrating WebSockets for bidirectional state synchronization."
         ],
         techStack: ["Node.js", "React", "React Native", "Redis", "MongoDB", "Stripe API", "AWS Amplify"],
-        gitLink: "https://github.com/hemu1808/transit-reservation",
+        gitLink: "https://github.com/hemu1808/ShuttleNow",
         liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7440202396758237184?compact=1",
         whyContent: `**Why ShuttleNow?** ShuttleNow is a real-time ticket booking app I built using the MERN stack. The biggest technical hurdle was handling high concurrency, what happens if two people try to book the exact same seat at the exact same second? To handle sudden spikes without crashing, I needed absolute control over the concurrency layer. By architecting a custom engine with Redis 'seat locking', I prevented about 95% of those double-booking conflicts.`,
         systemDesign: `
@@ -207,6 +207,7 @@ Handling thousands of concurrent users trying to book the exact same transit sea
             "Orchestrated the migration to AWS ECS Fargate, implementing Blue/Green deployments for zero-downtime releases."
         ],
         techStack: ["AWS AppSync", "GraphQL", "DynamoDB", "AWS Lambda", "S3", "React", "AWS ECS", "Cognito"],
+        gitLink: "https://github.com/hemu1808/Front-End-Project-University",
         whyContent: `**Why GraphQL?** At Speeler Technologies, I was incredibly focused on modernizing their core e-commerce platform specifically for a printing enterprise. The main challenge was that their shopping cart needed to be radically faster to handle peak traffic. Rebuilding it with AWS AppSync and GraphQL was a huge win—it actually cut data retrieval time by about 30%.
         
 **The Hardest Challenge:** The database design. I used a strict Single-Table Design in DynamoDB to keep queries lightning fast, but setting up the fine-grained access control with Cognito/IAM alongside it took extensive, careful planning to enforce exactly right.`,

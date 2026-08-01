@@ -4,11 +4,15 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { useTheme } from "next-themes";
+import { useMounted } from "@/lib/useMounted";
 
 function ParticleCloud() {
   const ref = useRef<THREE.Points>(null);
   const { resolvedTheme } = useTheme();
+  const mounted = useMounted();
   const particleCount = 3000;
+
+  const isLight = mounted && resolvedTheme === "light";
 
   const positions = useMemo(() => {
     const pos = new Float32Array(particleCount * 3);
@@ -40,7 +44,7 @@ function ParticleCloud() {
         size={0.03}
         sizeAttenuation={true}
         depthWrite={false}
-        opacity={resolvedTheme === "light" ? 0.2 : 0.6}
+        opacity={isLight ? 0.2 : 0.6}
       />
     </Points>
   );

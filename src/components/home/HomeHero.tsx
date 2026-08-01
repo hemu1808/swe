@@ -22,8 +22,8 @@ export function HomeHero() {
                     Hemanth Kumar Mangalapurapu<br />
                 </h1>
 
-                <p className="mt-8 max-w-2xl text-lg text-zinc-800 dark:text-white font-medium leading-relaxed italic border-l-4 border-blue-500 pl-6 text-left mx-auto">
-                    &quot;Candid, driven by impact, and ready for high-stakes engineering. Humble, practical, honest, direct, and focused on the real-world problem.&quot;
+                <p className="mt-8 max-w-2xl text-lg md:text-xl font-medium text-zinc-900 dark:text-zinc-100 leading-relaxed border-l-4 border-blue-500 pl-6 text-left mx-auto">
+                    Architecting high-concurrency systems, enterprise AI pipelines, and distributed cloud infrastructure with high real-world impact.
                 </p>
 
                 <p className="mt-6 max-w-7xl text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mx-auto">

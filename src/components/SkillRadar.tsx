@@ -3,15 +3,7 @@ import { motion } from "framer-motion";
 
 import { useTheme } from "next-themes";
 import { useMounted } from "@/lib/useMounted";
-
-// UPDATED SKILLS based on advanced Full Stack & AI Profile
-const skills = [
-  { name: "Backend / APIs", value: 95 },
-  { name: "React / Frontend", value: 90 },
-  { name: "DB / Architecture", value: 85 },
-  { name: "AI / RAG", value: 80 },
-  { name: "Cloud / AWS", value: 85 }
-];
+import { radarSkills as skills } from "@/data/skills";
 
 export const SkillRadar = () => {
   const { resolvedTheme } = useTheme();

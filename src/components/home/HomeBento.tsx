@@ -2,6 +2,7 @@ import { ScrollFadeIn } from "@/components/ScrollFadeIn";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { SkillRadar } from "@/components/SkillRadar";
 import { Code2, Database, GraduationCap } from "lucide-react";
+import { softSkills, toolsList } from "@/data/skills";
 
 export function HomeBento() {
     return (
@@ -27,7 +28,8 @@ export function HomeBento() {
                                 </p>
                             </div>
                             <div className="mt-8 flex flex-wrap gap-2">
-                                {["Soft Skills:", "Leadership", "Problem-solving", "Critical Analysis"].map(s => (
+                                <span className="text-xs text-zinc-600 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-transparent px-2 py-1 rounded">Soft Skills:</span>
+                                {softSkills.map(s => (
                                     <span key={s} className="text-xs text-zinc-600 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-transparent px-2 py-1 rounded">{s}</span>
                                 ))}
                             </div>
@@ -50,7 +52,7 @@ export function HomeBento() {
                         <SpotlightCard className="flex flex-col justify-center p-8">
                             <Database className="mb-4 h-8 w-8 text-purple-500" />
                             <div className="flex flex-wrap gap-2">
-                                {["Power BI", "SQL", "Tableau", "Excel", "Docker", "AWS", "Python", "Go", "Figma", "Git"].map(t => (
+                                {toolsList.map(t => (
                                     <span key={t} className="text-xs text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-transparent px-2 py-1 rounded">{t}</span>
                                 ))}
                             </div>

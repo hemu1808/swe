@@ -111,8 +111,11 @@ export const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <div className="flex items-center gap-4 pt-4 border-t border-zinc-200 dark:border-white/10">
-              <SocialLinks iconSize={16} />
+            <div className="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-white/10">
+              <div className="flex items-center gap-4">
+                <SocialLinks iconSize={16} />
+              </div>
+              <ThemeToggle />
             </div>
           </motion.nav>
         )}
@@ -130,9 +133,9 @@ export const Navbar = () => {
         <ThemeToggle />
       </div>
 
-      {/* Mobile Socials (always visible in pill bar) */}
-      <div className="flex md:hidden items-center gap-4">
-        <SocialLinks iconSize={16} />
+      {/* Mobile Socials & Theme Toggle */}
+      <div className="flex md:hidden items-center gap-3">
+        <ThemeToggle />
       </div>
     </motion.header>
   );

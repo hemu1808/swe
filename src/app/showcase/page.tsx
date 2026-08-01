@@ -106,7 +106,15 @@ export default function ShowcasePage() {
     const { resolvedTheme } = useTheme();
     const mounted = useMounted();
 
-    const canvasBg = mounted && resolvedTheme === "light" ? "#f8fafc" : "#050505"; // slate-50 or custom dark black
+    if (!mounted) {
+        return (
+            <div className="relative h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden selection:bg-blue-500/30 font-sans transition-colors duration-500">
+                <Navbar />
+            </div>
+        );
+    }
+
+    const canvasBg = resolvedTheme === "light" ? "#f8fafc" : "#050505";
 
     return (
         <div className="relative h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden selection:bg-blue-500/30 font-sans transition-colors duration-500">
@@ -127,17 +135,17 @@ export default function ShowcasePage() {
             </motion.div>
 
             {/* Full Screen WebGL Canvas */}
-            <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 2]}>
+            <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 1.5]}>
                 <color attach="background" args={[canvasBg]} />
 
                 {/* Immersive Fog */}
                 <fog attach="fog" args={[canvasBg, 10, 45]} />
 
-                <ambientLight intensity={mounted && resolvedTheme === "light" ? 0.8 : 0.2} />
-                <directionalLight position={[10, 10, 5]} intensity={mounted && resolvedTheme === "light" ? 1.5 : 1} />
+                <ambientLight intensity={resolvedTheme === "light" ? 0.8 : 0.2} />
+                <directionalLight position={[10, 10, 5]} intensity={resolvedTheme === "light" ? 1.5 : 1} />
 
-                <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-                <Sparkles count={500} scale={20} size={3} speed={0.4} opacity={mounted && resolvedTheme === "light" ? 0.3 : 0.8} color={mounted && resolvedTheme === "light" ? "#3b82f6" : "#a78bfa"} />
+                <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+                <Sparkles count={300} scale={20} size={3} speed={0.4} opacity={resolvedTheme === "light" ? 0.3 : 0.8} color={resolvedTheme === "light" ? "#3b82f6" : "#a78bfa"} />
 
                 {/* 
                   ScrollControls manages the scroll state. 

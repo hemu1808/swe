@@ -9,6 +9,17 @@ const outfit = Outfit({ subsets: ["latin"], weight: ["300", "400", "500", "600",
 export const metadata: Metadata = {
   title: "Hemanth Kumar | Portfolio",
   description: "Full Stack Engineer specializing in AI infrastructure, distributed systems, and data-driven product development.",
+  openGraph: {
+    title: "Hemanth Kumar | Full Stack & Systems Engineer",
+    description: "Full Stack Engineer specializing in AI infrastructure, distributed systems, and data-driven product development.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hemanth Kumar | Full Stack & Systems Engineer",
+    description: "Full Stack Engineer specializing in AI infrastructure, distributed systems, and data-driven product development.",
+  },
 };
 
 export default function RootLayout({

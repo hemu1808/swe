@@ -9,11 +9,29 @@ import { SystemDesignInteractive } from "@/components/projects/SystemDesignInter
 import { ArchitectureBlueprint, VideoWalkthrough } from "@/components/projects/ProjectVisuals";
 import { TechnicalInsight } from "@/components/projects/TechnicalInsight";
 
+import type { Metadata } from "next";
+
 export const generateStaticParams = async () => {
     return projectsData.map((project) => ({
         id: project.id,
     }));
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+    const project = projectsData.find(p => p.id === id);
+    if (!project) return { title: "Project Not Found" };
+
+    return {
+        title: `${project.title} | Hemanth Kumar`,
+        description: project.description,
+        openGraph: {
+            title: project.title,
+            description: project.description,
+            images: project.architecture?.image ? [{ url: project.architecture.image }] : [],
+        },
+    };
+}
 
 export default async function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -133,7 +151,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
                 </div>
                 <SystemDesignInteractive projectId={project.id} />
 
-                <div className="mt-20">
+                <div id="video" className="mt-20 scroll-mt-28">
                     <VideoWalkthrough
                         videoUrl={project.videoUrl}
                         categoryColor={projectColor}

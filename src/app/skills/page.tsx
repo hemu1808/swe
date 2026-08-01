@@ -8,6 +8,13 @@ import { ParticleWavesBackground } from "@/components/skills/ParticleWaves";
 import { Certifications } from "@/components/skills/Certifications";
 import { InsightsMedia } from "@/components/skills/InsightsMedia";
 import { SocialProof } from "@/components/skills/SocialProof";
+import { skillCategories } from "@/data/skills";
+
+const badgeStyleMap = {
+    default: "bg-white dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/10",
+    blue: "bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-500/20",
+    purple: "bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-500/20",
+};
 
 export default function SkillsPage() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -74,40 +81,18 @@ export default function SkillsPage() {
                 <div className="mb-12">
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 relative group p-6 md:p-10 rounded-3xl border border-zinc-200 dark:border-white/5 bg-zinc-50/50 dark:bg-zinc-900/30 shadow-xl shadow-zinc-200/50 dark:shadow-none backdrop-blur">
-                        <div>
-                            <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-3 border-b border-zinc-200 dark:border-white/10 pb-2">Frontend</h3>
-                            <div className="flex flex-wrap gap-2 mt-3">
-                                {["React", "TypeScript/JavaScript", "Next.js", "Redux", "HTML", "Tailwind CSS", "ComfyUI", "Figma", "Three.js", "Flask", "BeautifulSoup"].map(s => (
-                                    <span key={s} className="px-3 py-1.5 rounded-lg bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/10 shadow-sm dark:shadow-none transition-colors text-xs font-medium">{s}</span>
-                                ))}
+                        {skillCategories.map((cat) => (
+                            <div key={cat.name}>
+                                <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-3 border-b border-zinc-200 dark:border-white/10 pb-2">{cat.name}</h3>
+                                <div className="flex flex-wrap gap-2 mt-3">
+                                    {cat.skills.map((s) => (
+                                        <span key={s} className={`px-3 py-1.5 rounded-lg border shadow-sm dark:shadow-none transition-colors text-xs font-medium ${badgeStyleMap[cat.colorVariant || "default"]}`}>
+                                            {s}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-3 border-b border-zinc-200 dark:border-white/10 pb-2">Backend & Systems</h3>
-                            <div className="flex flex-wrap gap-2 mt-3">
-                                {["Go (Golang)", "Python", "Node.js", "PostgreSQL", "MongoDB", "Redis", "gRPC", "WebSockets", "Distributed Locking"].map(s => (
-                                    <span key={s} className="px-3 py-1.5 rounded-lg bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/10 shadow-sm dark:shadow-none transition-colors text-xs font-medium">{s}</span>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-3 border-b border-zinc-200 dark:border-white/10 pb-2">Cloud & DevOps</h3>
-                            <div className="flex flex-wrap gap-2 mt-3">
-                                {["AWS Lambda", "ECS Fargate", "DynamoDB", "Docker", "Containerd / CRI-O", "Terraform", "CI/CD", "Prometheus", "Grafana"].map(s => (
-                                    <span key={s} className="px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-500/20 shadow-sm dark:shadow-none transition-colors text-xs font-medium">{s}</span>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 className="text-sm tracking-widest uppercase font-bold text-zinc-600 dark:text-zinc-500 mb-3 border-b border-zinc-200 dark:border-white/10 pb-2">AI & Machine Learning</h3>
-                            <div className="flex flex-wrap gap-2 mt-3">
-                                {["LangChain", "Vector DBs (Chroma, Pinecone)", "Hugging Face", "Ollama", "PyTorch", "DSPy", "Llama 3", "BM25", "Cross-Encoders", "Reciprocal Rank Fusion", "RAG", "LLM Agents", "TensorFlow", "Matplotlib", "Pandas", "NumPy", "Scikit-learn"].map(s => (
-                                    <span key={s} className="px-3 py-1.5 rounded-lg bg-purple-50 dark:bg-purple-500/10 border border-purple-200 dark:border-purple-500/20 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-500/20 shadow-sm dark:shadow-none transition-colors text-xs font-medium">{s}</span>
-                                ))}
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
 

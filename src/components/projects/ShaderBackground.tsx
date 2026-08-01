@@ -181,9 +181,9 @@ const ShaderPlane: React.FC<ShaderPlaneProps> = ({ category }) => {
     const uniforms = useMemo(
         () => ({
             uTime: { value: 0 },
-            uColor1: { value: palettes[category][0] },
-            uColor2: { value: palettes[category][1] },
-            uColor3: { value: palettes[category][2] },
+            uColor1: { value: palettes[category][0].clone() },
+            uColor2: { value: palettes[category][1].clone() },
+            uColor3: { value: palettes[category][2].clone() },
         }),
         [category, palettes]
     );

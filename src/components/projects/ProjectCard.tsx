@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { ProjectData } from "@/data/projects";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Github, ExternalLink } from "lucide-react";
 
 interface ProjectCardProps {
@@ -12,10 +13,11 @@ interface ProjectCardProps {
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     const cardRef = useRef<HTMLDivElement>(null);
+    const router = useRouter();
 
     // Spotlight Glow Tracking
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [isHovered, setIsHovered] = useState(false);
+    const [_isHovered, setIsHovered] = useState(false);
 
     // 3D Tilt Values
     const x = useMotionValue(0);
@@ -52,6 +54,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         y.set(0);
     };
 
+    const handleCardClick = () => {
+        router.push(`/projects/${project.id}`);
+    };
+
     return (
         <motion.div
             ref={cardRef}
@@ -69,7 +75,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
             }}
             className="relative w-full mb-6 cursor-pointer group"
         >
-            <Link href={`/projects/${project.id}`} className="block relative w-full rounded-3xl border border-zinc-200 dark:border-white/5 bg-zinc-50/80 dark:bg-zinc-950/40 p-[1px] overflow-visible backdrop-blur-xl transition-colors hover:bg-white dark:hover:bg-zinc-900/40">
+            <div 
+                onClick={handleCardClick}
+                className="block relative w-full rounded-3xl border border-zinc-200 dark:border-white/5 bg-zinc-50/80 dark:bg-zinc-950/40 p-[1px] overflow-visible backdrop-blur-xl transition-colors hover:bg-white dark:hover:bg-zinc-900/40"
+            >
 
                 {/* Glow Hover Effects */}
                 <div
@@ -96,17 +105,27 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                         </div>
 
                         {/* Top Right Action Pills */}
-                        <div className="flex items-center gap-3 shrink-0">
+                        <div className="flex items-center gap-3 shrink-0 relative z-20">
                             {project.gitLink && (
-                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-white/5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors">
-                                    REPO <ArrowRight className="w-3 h-3" />
-                                </div>
+                                <a
+                                    href={project.gitLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-100 hover:bg-blue-600 hover:text-white dark:bg-white/5 dark:hover:bg-blue-600 text-xs font-semibold text-zinc-700 dark:text-zinc-300 transition-all shadow-sm"
+                                    title="Open GitHub Repository"
+                                >
+                                    REPO <Github className="w-3.5 h-3.5" />
+                                </a>
                             )}
-                            {project.liveLink && (
-                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-white/5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors">
-                                    LIVE <ArrowRight className="w-3 h-3" />
-                                </div>
-                            )}
+                            <Link
+                                href={`/projects/${project.id}#video`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-100 hover:bg-purple-600 hover:text-white dark:bg-white/5 dark:hover:bg-purple-600 text-xs font-semibold text-zinc-700 dark:text-zinc-300 transition-all shadow-sm"
+                                title="Scroll to Video Demo Walkthrough"
+                            >
+                                LIVE <ExternalLink className="w-3.5 h-3.5" />
+                            </Link>
                         </div>
                     </div>
 
@@ -156,7 +175,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                     </div>
 
                 </div>
-            </Link>
+            </div>
         </motion.div>
     );
 };

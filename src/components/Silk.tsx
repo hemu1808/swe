@@ -91,10 +91,9 @@ interface SilkPlaneProps {
 const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane({ uniforms }, ref) {
   const { viewport } = useThree();
 
-  useLayoutEffect(() => {
-    const mesh = ref as React.MutableRefObject<Mesh | null>;
-    if (mesh.current) {
-      mesh.current.scale.set(viewport.width, viewport.height, 1);
+  React.useEffect(() => {
+    if (ref && typeof ref === 'object' && ref.current) {
+      ref.current.scale.set(viewport.width, viewport.height, 1);
     }
   }, [ref, viewport]);
 

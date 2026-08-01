@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Boxes, Info } from 'lucide-react';
 import ReactFlow, { Background, BackgroundVariant, useNodesState, useEdgesState } from 'reactflow';
@@ -9,10 +9,24 @@ import { useTheme } from 'next-themes';
 import { useMounted } from '@/lib/useMounted';
 
 export function SystemDesignInteractive({ projectId }: { projectId: string }) {
-    const data = getSystemData(projectId);
+    const data = useMemo(() => getSystemData(projectId), [projectId]);
     
-    // If we have no structured layout for this project ID, safely return nothing.
-    const [nodes, setNodes, onNodesChange] = useNodesState(data?.nodes || []);
+    // Initial nodes with active styling
+    const initialNodes = useMemo(() => {
+        if (!data) return [];
+        const initialActiveId = data.nodes[0]?.id || null;
+        return data.nodes.map((n) => {
+            const isActive = n.id === initialActiveId;
+            return {
+                ...n,
+                className: isActive 
+                    ? `${n.className} ring-2 ring-blue-500 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-950 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.2)] dark:shadow-[0_0_20px_rgba(59,130,246,0.6)]`
+                    : n.className
+            };
+        });
+    }, [data]);
+
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(data?.edges || []);
     const [activeNodeId, setActiveNodeId] = useState<string | null>(data?.nodes[0]?.id || null);
     const { resolvedTheme } = useTheme();
@@ -21,17 +35,21 @@ export function SystemDesignInteractive({ projectId }: { projectId: string }) {
     useEffect(() => {
         if (!data) return;
         
-        // Dynamically style nodes based on selection by appending tailwind overrides
-        setNodes(data.nodes.map((n) => {
-            const isActive = n.id === activeNodeId;
-            return {
-                ...n,
-                className: isActive 
-                    ? `${n.className} ring-2 ring-blue-500 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-950 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.2)] dark:shadow-[0_0_20px_rgba(59,130,246,0.6)]`
-                    : n.className
-            };
-        }));
-    }, [activeNodeId, setNodes, data]);
+        // Dynamically update node styling on selection
+        setNodes((prevNodes) =>
+            prevNodes.map((n) => {
+                const isActive = n.id === activeNodeId;
+                const currentClass = n.className || "";
+                const baseClass = currentClass.replace(/ ring-2 ring-blue-500 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-950 border-blue-500 shadow-\[0_0_20px_rgba\(59,130,246,0\.2\)\] dark:shadow-\[0_0_20px_rgba\(59,130,246,0\.6\)\]/g, "");
+                return {
+                    ...n,
+                    className: isActive 
+                        ? `${baseClass} ring-2 ring-blue-500 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-950 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.2)] dark:shadow-[0_0_20px_rgba(59,130,246,0.6)]`
+                        : baseClass
+                };
+            })
+        );
+    }, [activeNodeId, data, setNodes]);
 
     if (!data) return null; // Component hides if no data mapped for ID
 
