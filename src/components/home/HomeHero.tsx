@@ -26,9 +26,8 @@ export function HomeHero() {
                     Architecting high-concurrency systems, enterprise AI pipelines, and distributed cloud infrastructure with high real-world impact.
                 </p>
 
-                <p className="mt-6 max-w-7xl text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mx-auto">
-                    M.S. in Computer Science at <b>Auburn University at Montgomery</b>.
-                    Full-stack engineer with 2+ years of production experience, specializing in AI infrastructure, high-performance systems and data-driven product development. Experienced building real-time dashboards, and scalable backend infrastructure with a growing focus on experimentation, analytics, and growth engineering.
+                <p className="mt-6 max-w-7xl text-base md:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mx-auto text-center">
+                    Full-Stack &amp; AI Engineer with 5 years of experience building Python/Go backends, React/Next.js frontends, and enterprise RAG &amp; agent orchestration.
                 </p>
 
                 <div className="mt-12 flex gap-4 justify-center"> {/* Added justify-center for alignment */}

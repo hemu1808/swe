@@ -68,7 +68,7 @@ export default function SkillsPage() {
                 }}
             />
 
-            <main className="mx-auto max-w-7xl px-6 pb-20 pt-32 relative z-20">
+            <main className="mx-auto max-w-[1400px] px-6 pb-20 pt-32 relative z-20">
                 <header className="mb-12">
                     <h1 className="text-2xl md:text-4xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-4">
                         Skills & Technologies

@@ -52,7 +52,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
             <Navbar />
             <ShaderBackground category={project.category} />
 
-            <main className="mx-auto max-w-7xl px-6 pb-24 pt-24 lg:pt-32">
+            <main className="mx-auto max-w-[1400px] px-6 pb-24 pt-24 lg:pt-32">
                 <Link
                     href="/projects"
                     className="inline-flex items-center gap-2 text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors mb-8 group bg-zinc-100 dark:bg-white/5 px-4 py-2 rounded-full border border-zinc-200 dark:border-white/10 w-max"

@@ -8,7 +8,7 @@ export function HomeBento() {
     return (
         <>
             <ScrollFadeIn>
-                <section id="about" className="mt-24 md:mt-32">
+                <section id="about" className="mt-24 md:mt-30">
                     <div className="mb-8 flex items-center justify-between">
                         <h2 className="text-3xl font-bold text-zinc-900 dark:text-white flex items-center gap-3">
                             <Code2 className="text-blue-500 w-6 h-6" /> Technical Arsenal
@@ -18,19 +18,28 @@ export function HomeBento() {
                     <div className="grid gap-4 md:grid-cols-4 md:grid-rows-2">
 
                         {/* Main About Card */}
-                        <SpotlightCard className="p-8 md:col-span-2 md:row-span-2 flex flex-col justify-between">
+                        <SpotlightCard className="p-8 md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col justify-between">
                             <div>
                                 <h3 className="mb-4 text-2xl font-bold text-zinc-900 dark:text-white">About Me</h3>
-                                <p className="leading-relaxed text-zinc-700 dark:text-zinc-400">
-                                    I&apos;m a builder at heart—someone who loves turning real-world problems into reliable, user-friendly software. I&apos;ve completed my M.S. in Computer Science at Auburn University at Montgomery (May 2025), and I&apos;ve spent the last few years shipping full-stack apps and ML-powered tools that scale.
-                                    <br /><br />
-                                    Prior to my Master&apos;s, I spent two years as a Software Engineer at Speeler Technologies, focusing on full-stack development using React and AWS. Recently, I&apos;ve been diving deep into Cloud Orchestration and building AI applications using RAG architectures to build enterprise-grade solutions.
-                                </p>
+                                <div className="space-y-3.5 text-sm md:text-base leading-relaxed text-zinc-700 dark:text-zinc-400">
+                                    <p>
+                                        I&apos;m a builder at heart—someone who loves turning real-world problems into reliable, user-friendly software & comfortable owning complex software end-to-end—from high-throughput Python and Go backend microservices to dynamic React and Next.js user interfaces.
+                                    </p>
+                                    <p>
+                                        Currently at <strong>LeapGen AI</strong>, building enterprise RAG pipelines and multi-agent workflow orchestration using <strong>LangGraph</strong> and <strong>Model Context Protocol (MCP)</strong>. Previously at <strong>SmartRevIQ (2023–25)</strong>, engineered a revenue intelligence platform powered by schema-driven form engines and AI pricing agents.
+                                    </p>
+                                    <p>
+                                        Architected three flagship builds—an <em>enterprise RAG knowledge base</em>, a <em>distributed Go container orchestrator</em>, and a <em>high-concurrency transit booking engine</em>.
+                                    </p>
+                                    <blockquote className="border-l-2 border-yellow-500 pl-3 py-1.5 text-xs md:text-sm text-zinc-600 dark:text-zinc-400 italic bg-yellow-500/[0.04] rounded-r-md">
+                                        &ldquo;I like systems where correctness under concurrency actually matters. Moving deeply into AI/LLM work, I care immensely about the boring infra—observability, idempotency, crash-safety—before trusting any optimization on top of it.&rdquo;
+                                    </blockquote>
+                                </div>
                             </div>
                             <div className="mt-8 flex flex-wrap gap-2">
-                                <span className="text-xs text-zinc-600 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-transparent px-2 py-1 rounded">Soft Skills:</span>
+                                <span className="text-xs text-zinc-600 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-transparent px-2 py-1 rounded font-medium">Core Focus:</span>
                                 {softSkills.map(s => (
-                                    <span key={s} className="text-xs text-zinc-600 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-transparent px-2 py-1 rounded">{s}</span>
+                                    <span key={s} className="text-xs text-zinc-600 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-white/5 px-2.5 py-1 rounded">{s}</span>
                                 ))}
                             </div>
                         </SpotlightCard>

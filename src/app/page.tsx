@@ -12,7 +12,7 @@ export default function Home() {
             <Navbar />
             <ParticleBackground />
 
-            <main id="main-content" className="mx-auto max-w-7xl px-6 pb-20 pt-32">
+            <main id="main-content" className="mx-auto max-w-[1400px] px-6 pb-20 pt-32">
                 <HomeHero />
                 <HomeBento />
                 <HomeProjects />

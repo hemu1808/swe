@@ -27,7 +27,7 @@ export default function ProjectsPage() {
             <ShaderBackground category={activeCategory} />
 
             {/* Main Content Area */}
-            <main className="mx-auto max-w-7xl px-6 pb-20 pt-24">
+            <main className="mx-auto max-w-[1400px] px-6 pb-20 pt-24">
 
                 {/* Header Section */}
                 <header className="mb-8 md:mb-12">

@@ -10,7 +10,7 @@ export const SkillRadar = () => {
   const mounted = useMounted();
 
   const radius = 80;
-  const center = 125;
+  const center = 160; // 320 / 2 = 160 for perfect SVG centering
   const angleSlice = (Math.PI * 2) / skills.length;
 
   const getCoordinates = (value: number, index: number) => {
@@ -22,19 +22,25 @@ export const SkillRadar = () => {
     };
   };
 
-  const pathData = skills.map((s, i) => {
-    const { x, y } = getCoordinates(s.value, i);
-    return `${i === 0 ? "M" : "L"} ${x} ${y}`;
-  }).join(" ") + " Z";
+  const pathData =
+    skills
+      .map((s, i) => {
+        const { x, y } = getCoordinates(s.value, i);
+        return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+      })
+      .join(" ") + " Z";
 
   const isLight = mounted && resolvedTheme === "light";
-  const gridColor = isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)";
-  const textColor = isLight ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.8)";
-  const pathFill = isLight ? "rgba(59, 130, 246, 0.1)" : "rgba(59, 130, 246, 0.2)";
+  const gridColor = isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)";
+  const textColor = isLight ? "rgba(0,0,0,0.75)" : "rgba(255,255,255,0.85)";
+  const pathFill = isLight ? "rgba(59, 130, 246, 0.12)" : "rgba(59, 130, 246, 0.25)";
 
   return (
-    <div className="relative flex justify-center items-center py-6 w-full">
-      <svg width="320" height="320" className="overflow-visible max-w-full">
+    <div className="relative flex justify-center items-center w-full my-auto overflow-hidden">
+      <svg
+        viewBox="0 0 320 320"
+        className="w-full max-w-[280px] sm:max-w-[320px] h-auto overflow-visible mx-auto"
+      >
         {/* Background Grid Circles */}
         {[20, 40, 60, 80, 100].map((r, i) => (
           <circle

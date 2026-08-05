@@ -38,70 +38,71 @@ export interface ProjectData {
 export const projectsData: ProjectData[] = [
     {
         id: "enterprise-rag",
-        title: "HGPT: Enterprise RAG Knowledge Base",
+        title: "HemGPT: Enterprise RAG System",
         category: "AI & Data",
         duration: "2025",
-        role: "Full-stack AI",
+        role: "Full-Stack AI",
         status: "Active",
-        focus: "Semantic Search",
-        description: "An enterprise AI search engine that allows users to securely query 10,000+ internal documents in real-time, built with Llama 3 and a custom Retrieval-Augmented Generation (RAG) pipeline.",
+        focus: "Semantic & Lexical Hybrid RAG",
+        description: "A production-grade RAG platform enabling secure multi-document reasoning over 10,000+ internal documents via hybrid vector search, Reciprocal Rank Fusion, and local Ollama inference.",
         highlights: [
-            "Implemented a hybrid search strategy using ChromaDB, BM25 for semantic vector retrieval, and Reciprocal Rank Fusion.",
-            "Cross-Encoder re-ranking to maximize context relevance, improving accuracy by 50% over standard keyword search.",
-            "Enabled high-performance ingestion pipeline using FastAPI and Celery workers to asynchronously process and chunk large datasets into embedded vectors with Chain-of-Thought reasoning without blocking the UI."
+            "Engineered a hybrid retrieval engine pairing ChromaDB vector embeddings with BM25 keyword search, fused via Reciprocal Rank Fusion.",
+            "Implemented cross-encoder reranking and context compression to eliminate low-relevance passages before LLM context injection.",
+            "Integrated local Ollama inference for query expansion and token streaming with zero external API data leakage.",
+            "Built async background ingestion via FastAPI and Celery workers, guarded by Redis rate limiters, caching, and circuit breakers.",
+            "Configured full observability with Prometheus metrics, Grafana dashboards, Jaeger distributed tracing, and Kubernetes HPA auto-scaling."
         ],
-        techStack: ["Python", "LangChain", "ChromaDB", "Ollama", "React", "FastAPI", "Celery"],
+        techStack: ["Python", "FastAPI", "LangChain", "ChromaDB", "BM25", "Ollama", "Cross-Encoder", "Celery", "Redis", "Prometheus", "Jaeger", "Docker"],
         gitLink: "https://github.com/hemu1808/H_ollama_gpt",
         liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7437262438103707649?compact=1",
-        whyContent: `**Why HGPT?** Data privacy and vendor lock-in. Enterprise data cannot always be sent to OpenAI's APIs. By building a custom pipeline using local models via Ollama and ChromaDB, we guarantee zero data leakage. Furthermore, managed services charge heavily per token. A custom hybrid search strategy using local Cross-Encoder re-ranking achieves comparable 50% improved accuracy without the compounding API costs at scale.
+        whyContent: `**Why HemGPT?** Enterprise data privacy and vendor cost management. Sending sensitive internal documents to third-party LLM APIs risks compliance violations and compounding per-token costs at scale. By deploying local models via Ollama alongside ChromaDB and BM25, we achieve zero data leakage while maintaining high precision.
 
-**The Hardest Challenge:** Tuning the chunking strategy. I implemented a parent-child hierarchy, meaning we search through small chunks for millimeter precision, but retrieve the larger surrounding document context for the LLM. This made the generation far more coherent.`,
+**The Hardest Challenge:** Context window budgeting and chunking drift. I implemented a parent-child chunking hierarchy and sentence-level context compression. The retriever searches fine-grained child chunks for pinpoint accuracy, but inflates the surrounding parent context for the LLM generator.`,
         systemDesign: `
 ### System Architecture
 
-The Enterprise RAG Knowledge Base is built around a decoupled architecture designed for high-throughput ingestion and low-latency retrieval.
+The HemGPT RAG System decouples ingestion, hybrid retrieval, and generation to handle heavy concurrent query loads reliably.
 
-**1. Data Ingestion Pipeline (Asynchronous)**
-- **FastAPI** acts as the ingestion gateway.
-- Large PDF and txt documents are pushed to a **Celery** background worker so the UI doesn't freeze.
-- Celery workers parse them, chunk them using contextual splitters, and run **DSPy / Llama 3** to extract metadata and perform initial Chain-of-Thought (CoT) reasoning.
+**1. Data Ingestion & Async Processing**
+- **FastAPI** handles file validation and queues ingestion jobs to **Celery** workers with Redis backends.
+- Workers perform semantic chunking, parent-child splitting, and async vector index generation without blocking the web thread.
 
-**2. Hybrid Retrieval Engine**
-- During a query, both a sparse representation (BM25) and dense representation (embedding) are calculated.
-- **Reciprocal Rank Fusion (RRF)** combines these disparate scoring domains to ensure we get exactly accurate results—not just 'kind of' related ones.
-- A **Cross-Encoder** re-ranks the top K results to guarantee maximum semantic relevance.
+**2. Hybrid Retrieval & RRF Fusion**
+- Queries undergo **Query Expansion** via Ollama to generate parallel search variations.
+- Search queries execute concurrently against **ChromaDB** (dense semantic vector search) and **BM25/Elasticsearch** (sparse lexical search).
+- **Reciprocal Rank Fusion (RRF)** merges candidate lists, followed by a **Cross-Encoder Reranker** that scores exact passage relevance.
 
-**3. Observability & Caching**
-- To make this production-ready, **Redis** was added to cache repeated queries, driving response times down.
-- **Prometheus and Jaeger** are configured for observability, enabling exact bottleneck tracing if the inference pipeline slows.
+**3. Fault Tolerance & Observability**
+- **Redis** provides response caching, token-bucket rate limiting, and circuit breakers around inference calls.
+- **Prometheus and Jaeger** capture query-level latency histograms and distributed traces across vector lookup and model generation steps.
 `,
         architecture: {
             image: "/hgptpn.jpg",
-            description: "The Bottleneck: Relying solely on vector embeddings (ChromaDB) resulted in poor recall for specific keyword queries.\n\n### The Solution: I implemented a hybrid search pattern. Queries run in parallel against ChromaDB (semantic) and BM25 (lexical), fusing the results via Reciprocal Rank Fusion (RRF).\n\n### The Trade-off: To prevent garbage context from reaching the LLM, I added a cross-encoder to rerank the results. Because cross-encoders are computationally expensive, I strictly bound the reranking step to the top 20 documents, trading a ~300ms latency penalty for a massive spike in accuracy.\n\nIntegrated Celery for asynchronous document ingestion so the main event loop never blocks, and wired up Prometheus/Grafana for full observability."
+            description: "The Bottleneck: Pure vector search (ChromaDB) missed exact keyword queries, while keyword search (BM25) missed semantic intent.\n\n### The Solution\nImplemented a parallel hybrid retrieval pipeline executing dense and sparse queries simultaneously, fusing candidate scores with Reciprocal Rank Fusion (RRF) and filtering via Cross-Encoder reranking.\n\n### The Trade-off\nReranking introduces a ~150ms latency overhead, but boosts context precision by over 50%, ensuring higher accuracy before prompt delivery."
         },
         videoUrl: "/hgptvideo.mp4",
         insights: {
-            title: "The Reality of RAG",
+            title: "The Reality of Production RAG",
             quote: "An LLM-as-a-judge that agrees with itself is not an eval.",
             levels: [
                 {
-                    title: "Level 1: LLM API Wrapper",
-                    description: "No tools, no architecture, no memory. Just passing prompts."
+                    title: "Level 1: Prompt Wrapper",
+                    description: "Direct API calls without context grounding or local memory."
                 },
                 {
-                    title: "Level 2: Basic RAG",
-                    description: "Vector Retrieval. 90% of the industry is stuck here."
+                    title: "Level 2: Basic Vector Search",
+                    description: "Naive vector retrieval stuck with single-embedding recall gaps."
                 },
                 {
-                    title: "Level 3: Functional Agent",
-                    description: "Systems that can think, act, use external tools, and answer."
+                    title: "Level 3: Hybrid Retrieval & Reranking",
+                    description: "BM25 + Dense vector search fused with cross-encoder precision."
                 },
                 {
-                    title: "Level 4: Multi-Agent Reasoning",
-                    description: "Autonomous research, context management, and deep monitoring."
+                    title: "Level 4: Observability & Resilience",
+                    description: "Circuit breakers, tracing, async ingestion, and containerized scale."
                 }
             ],
-            reflection: "Getting from Level 2 to Level 4 requires serious engineering. When I built the HGPT RAG system, implementing hybrid retrieval (BM25 + Semantic), Reciprocal Rank Fusion, and cross-encoder reranking proved one thing: moving past basic vector search is expensive. The better your recall and reasoning, the higher your compute cost. This 'memory tax' is the biggest bottleneck in local AI architecture right now.",
+            reflection: "Moving from basic RAG to a production system requires rigorous infrastructure. Implementing hybrid retrieval (BM25 + Vector), Reciprocal Rank Fusion, cross-encoder reranking, and Jaeger tracing proved that query accuracy is an architectural problem, not just a prompt engineering exercise.",
             externalLink: {
                 label: "Read the full breakdown on TurboQuant",
                 url: "https://lnkd.in/e8yb9nsZ"
@@ -110,83 +111,126 @@ The Enterprise RAG Knowledge Base is built around a decoupled architecture desig
     },
     {
         id: "container-orchestration",
-        title: "Deploy: Distributed Container Orchestration Engine",
+        title: "AuraDeploy: Distributed Container Orchestration Engine",
         category: "Backend & Systems",
         duration: "2025",
-        role: "Systems Engineer",
+        role: "Systems & Infrastructure",
         status: "Completed",
-        focus: "Cluster Resilience",
-        description: "A custom container orchestration platform, similar to a lightweight Kubernetes, designed to automatically monitor, scale, and recover failing server nodes in under 30ms.",
+        focus: "Distributed Consensus & Runtime",
+        description: "A high-availability container orchestration engine written natively in Go, leveraging embedded Raft consensus, custom CNI networking, and CRI-O/containerd OCI runtimes.",
         highlights: [
-            "Reduced node failure detection time to <30ms by engineering a custom distributed control plane in Go.",
-            "Built a CLI and Dashboard utilizing Grafana to visualize real-time node metrics, exposing cluster state via RESTful API.",
-            "Ensured cluster consistency and crash recovery by implementing a Write-Ahead Log (WAL) in PostgreSQL, creating a robust failover system for controller outages.",
-            "Integrated Prometheus for distributed tracing and real-time observability.",
-            "Improved hardware utilization by 25% by designing a custom scheduler using Bin Packing algorithm to optimize memory allocation across worker nodes."
+            "Architected an Active-Passive high-availability control plane in Go using embedded HashiCorp Raft for distributed consensus, log replication, and FSM snapshots with zero external DB dependency.",
+            "Integrated native CRI-O / containerd runtime interfaces (`containerd/oci`) for staging OCI images, configuring cgroup limits, and managing network namespaces via `netlink`.",
+            "Designed a custom scheduling loop with predicate filtering (`HasSufficientResources`, `VolumeNodeAffinity`) and `LeastAllocated` priority scoring for optimal cluster workload placement.",
+            "Engineered a multi-host custom CNI overlay featuring VXLAN mesh networking, deterministic `/24` IPAM subnets, and an integrated dummy UDP DNS server for service discovery.",
+            "Built a custom CSI local volume provisioner with 1:1 PVC host-path binding, JWT + RBAC authentication, admission-control webhooks, and a declarative GitOps drift reconciler."
         ],
-        techStack: ["Go", "PostgreSQL", "Docker", "REST API", "Grafana", "gRPC", "Prometheus"],
+        techStack: ["Go", "HashiCorp Raft", "containerd / CRI-O", "Custom CNI (VXLAN)", "Custom CSI", "GitOps", "JWT / RBAC", "Prometheus", "OpenTelemetry", "React"],
         gitLink: "https://github.com/hemu1808/Deploysh",
         liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7440106367673188352?compact=1",
-        whyContent: `**Why Deploy.sh?** Because Kubernetes is massive, resource-heavy, and often overkill for specialized, resource-constrained environments. I essentially challenged myself to build a mini-cloud platform from scratch. I wrote the backend in Go because I needed it to be super fast. By engineering a custom Go scheduler using a Bin Packing algorithm, I improved hardware utilization by 25% without the heavy operational overhead of managing a full Kubernetes cluster.`,
+        whyContent: `**Why AuraDeploy?** Full Kubernetes stacks carry heavy operational overhead and memory footprints that are overkill for resource-constrained or edge environments. I challenged myself to engineer a single-binary control plane in Go that guarantees state consistency and self-healing.
+
+**The Hardest Challenge:** Multi-host container networking without external plugins. I wrote a custom CNI that uses Linux \`netlink\` to create veth pairs, attaches them to a host bridge (\`aura0\`), and encapsulates traffic across nodes via a VXLAN overlay interface (\`vxlan0\`).`,
         systemDesign: `
 ### System Architecture
 
-A microservices-based distributed control plane built entirely in Go, mimicking core aspects of Kubernetes to understand low-level distributed orchestration.
+AuraDeploy is structured as a decoupled distributed control plane and container execution agent written entirely in Go.
 
-**1. Control Plane & gRPC Heartbeats**
-- Worker nodes establish a bidirectional **gRPC stream** with the Master Node.
-- The heartbeat frequency is extremely tight. If a container crashes, my system detects it and restarts it automatically within a minute.
+**1. Control Plane & Consensus (Subsystem A)**
+- Embedded **HashiCorp Raft** manages state machine replication, leader election, and log snapshots.
+- An HTTP API server protected by **JWT authentication** and **RBAC admission control** redirects state mutations to the active Raft leader.
+- A **GitOps reconciler** periodically diffs remote Git manifest specs against current cluster state to heal drift.
 
-**2. Custom Load Scaling**
-- Instead of random placement, the master's scheduling algorithm evaluates current Memory and CPU availability.
-- It tracks CPU usage globally and auto-provisions more nodes dynamically if load spikes above 70%.
-
-**3. WAL & Postgres Failover**
-- To prevent split-brain and ensure consistency if the Master Node crashes, all cluster state changes are appended to a **Write-Ahead Log (WAL)** stored in a master/slave **PostgreSQL** deployment.
+**2. Execution & Data Plane (Subsystem B)**
+- **Custom Scheduler:** Runs a goroutine loop evaluating predicates and \`LeastAllocated\` priorities to bind pending pods to worker nodes.
+- **CRI-O / containerd Client:** Downloads OCI image layers, applies cgroup memory/CPU limits, and spawns container runtimes.
+- **Custom CNI & CSI:** Provisions VXLAN network interfaces, handles deterministic IPAM allocations, and binds local storage paths to PVC mounts.
 `,
         architecture: {
             image: "/deploypn.png",
-            description: "The Bottleneck: Streaming live CPU/Memory metrics from a Go backend to a React frontend can easily cause aggressive DOM repaints, freezing the user's browser.\n\n### The Backend Architecture\nI utilized Go's concurrency model, running a background goroutine ticker that continuously updates system state in SQLite (using custom GORM interfaces to handle JSON arrays). The Go WebSocket Hub then broadcasts this payload instantly.\n\n### The Frontend Trade-off\nTo prevent UI freezing, I bypassed standard React state (useState/useReducer). I intercepted the WebSocket stream and fed the payload directly into the React Query cache (queryClient.setQueryData). This trades some frontend architecture flexibility for a highly optimized, polling-free DOM update cycle."
+            description: "The Bottleneck: High-frequency cluster status updates to the React dashboard could easily trigger heavy DOM re-renders and UI freezing.\n\n### The Backend Architecture\nGo goroutines continuously poll Raft state and system metrics, broadcasting snapshot diffs over a high-throughput WebSocket hub.\n\n### The Frontend Solution\nDirectly intercepted WebSocket payloads into the React Query cache, bypassing traditional React state hooks to achieve polling-free, 60fps dashboard updates."
         },
         videoUrl: "/deployvideo.mp4"
     },
     {
-        id: "transit-reservation",
-        title: "Shuttle: High-Concurrency Transit Reservation System",
-        category: "Full Stack",
-        duration: "2024",
-        role: "Backend Lead",
-        status: "Live",
-        focus: "Concurrency Control",
-        description: "A scalable booking engine handling high-concurrency seat reservations across web and mobile platforms.",
+        id: "sunx-radiography",
+        title: "SunX: AI Radiography & Clinical Decision Support",
+        category: "AI & Data",
+        duration: "2025",
+        role: "AI Systems",
+        status: "Active",
+        focus: "Medical Imaging & Clinical RAG",
+        description: "An AI radiography platform integrating a DenseNet-121 vision model for chest X-ray pathology detection with a pgvector RAG engine to surface evidence-based clinical treatment guidelines.",
         highlights: [
-            "Reduced double-booking conflicts by 95% during burst traffic events by architecting a booking engine utilizing Redis Distributed Locks (Redlock) and Optimistic Concurrency Control (OCC).",
-            "Secured PCI-compliant payments across React web and React Native mobile interfaces by integrating Stripe API webhooks within serverless functions for asynchronous verification.",
-            "Scaled real-time inventory updates to 1,000+ concurrent clients with MongoDB versioning to manage seat inventory state.",
-            "<50ms latency achieved by integrating WebSockets for bidirectional state synchronization."
+            "Built a DICOM image processing and HIPAA-aware PHI anonymization pipeline using `pydicom` and `MONAI` for automated medical image ETL.",
+            "Deployed a fine-tuned DenseNet-121 PyTorch vision model on NVIDIA Triton Inference Server to classify 14 pathology classes (Pneumonia, Cardiomegaly, Effusion, etc.).",
+            "Engineered a clinical RAG pipeline using LangChain and `pgvector` over 1536-dimensional embeddings, retrieving treatment recommendations grounded in AHA/ACC and IDSA medical guidelines.",
+            "Integrated Cornerstone.js WebGL DICOM viewer into a Next.js dashboard for zero-latency client-side pan, zoom, and window-level manipulation.",
+            "Orchestrated async inference tasks with Celery and Redis, fully containerized via Docker Compose with Nginx reverse proxying."
         ],
-        techStack: ["Node.js", "React", "React Native", "Redis", "MongoDB", "Stripe API", "AWS Amplify"],
-        gitLink: "https://github.com/hemu1808/ShuttleNow",
-        liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7440202396758237184?compact=1",
-        whyContent: `**Why ShuttleNow?** ShuttleNow is a real-time ticket booking app I built using the MERN stack. The biggest technical hurdle was handling high concurrency, what happens if two people try to book the exact same seat at the exact same second? To handle sudden spikes without crashing, I needed absolute control over the concurrency layer. By architecting a custom engine with Redis 'seat locking', I prevented about 95% of those double-booking conflicts.`,
+        techStack: ["PyTorch", "DenseNet-121", "MONAI", "FastAPI", "Next.js", "PostgreSQL", "pgvector", "LangChain", "Cornerstone.js", "NVIDIA Triton", "Celery", "Docker"],
+        gitLink: "https://github.com/hemu1808/SunX",
+        whyContent: `**Why SunX?** Most medical AI tools stop at pathology classification, leaving clinicians with raw probability numbers. SunX bridges visual AI and clinical action by retrieving evidence-based treatment plans directly from peer-reviewed clinical guidelines (IDSA/ATS, AHA).
+
+**The Clinical Guardrails:** SunX uses RAG over verified medical literature rather than relying on LLM parametric memory, ensuring all treatment suggestions include traceable source citations for physician review.`,
         systemDesign: `
 ### System Architecture
 
-Handling thousands of concurrent users trying to book the exact same transit seat requires stringent concurrency guarantees.
+SunX combines high-throughput vision model inference with vector-based medical retrieval.
 
-**1. Redis Seat Locking**
-- As soon as a user selects a seat, a **Distributed Lock** is acquired in Redis. It locks it for a few minutes, temporally "holding" the inventory and preventing other active sessions from progressing past the checkout screen for the exact same seat.
+**1. Visual Inference Pipeline**
+- Incoming DICOM files are anonymized and preprocessed via **MONAI**.
+- Tensors are dispatched to **NVIDIA Triton Inference Server**, running **DenseNet-121** to output 14 multi-label pathology probability scores and bounding boxes.
 
-**2. Stripe PCI Verification**
-- For payments, I didn't want to handle sensitive data directly on my server. I integrated **Stripe** using **AWS Lambda** serverless functions to keep everything secure, asynchronous, and strictly PCI-compliant.
+**2. Clinical Decision Support (RAG)**
+- Detected findings trigger a **LangChain** workflow that queries **PostgreSQL + pgvector**.
+- The RAG engine retrieves matching clinical practice guidelines (IDSA/ATS) and formats a structured treatment recommendation.
 
-**3. Unified Frontend & CI/CD**
-- Since users are heavily on mobile, I used a unified UI approach with **React** and **React Native** so the experience is perfectly smooth across devices.
-- The entire system is bound to a full CI/CD pipeline on **AWS Amplify**, automatically building and updating the live site upon code push.
+**3. WebGL Imaging Interface**
+- The **Next.js** frontend embeds **Cornerstone.js**, rendering DICOM pixel arrays directly on the GPU via WebGL for instantaneous window-leveling and annotation.
+`
+    },
+    {
+        id: "transit-reservation",
+        title: "ShuttleNow: Real-Time Shuttle Booking Platform",
+        category: "Full Stack",
+        duration: "2024",
+        role: "Full-Stack Backend",
+        status: "Live",
+        focus: "Concurrency & WebSockets",
+        description: "A real-time transit reservation engine featuring Socket.IO seat soft-locking, live Google Maps route tracking, Stripe payment processing, and digital QR tickets.",
+        highlights: [
+            "Eliminated double-booking race conditions by 95% using Socket.IO in-memory soft-locks that instantly reserve selected seats across all connected clients before database writes occur.",
+            "Integrated Google Maps Directions API for live route drawing and Google Places Autocomplete for dynamic admin location entry.",
+            "Architected secure payment verification using Stripe API webhooks and serverless functions for PCI-compliant transaction processing.",
+            "Generated scannable digital QR-code tickets upon booking confirmation, saved to user profiles and instant verification endpoints.",
+            "Implemented dual JWT authentication portals for riders and admins, supporting guest checkout flows with zero friction."
+        ],
+        techStack: ["Node.js", "Express.js", "React", "MongoDB", "Socket.IO", "Stripe API", "Google Maps API", "QR Code", "Tailwind CSS"],
+        gitLink: "https://github.com/hemu1808/ShuttleNow",
+        liveLink: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7440202396758237184?compact=1",
+        whyContent: `**Why ShuttleNow?** Traditional transit reservation sites rely on static HTTP requests, causing race conditions when multiple users attempt to book the last available seat simultaneously. ShuttleNow uses WebSockets to lock seats in real-time as soon as a user clicks.
+
+**The Hardest Challenge:** Balancing transient soft-lock state with permanent DB state. I separated real-time seat holds into a Redis/Socket.IO memory layer, committing to MongoDB only after Stripe payment verification succeeded.`,
+        systemDesign: `
+### System Architecture
+
+Designed to provide sub-50ms seat state synchronization across concurrent mobile and web clients.
+
+**1. Real-Time Seat Soft-Locking**
+- User seat selection triggers a **Socket.IO event** that sets an in-memory lock with a TTL countdown.
+- All connected clients receive an instant UI update marking the seat as unavailable.
+
+**2. Payment & Ticketing Pipeline**
+- Checkout dispatches a **Stripe PaymentIntent**. Upon payment webhook confirmation, MongoDB updates seat state from soft-locked to confirmed.
+- A **QR Code payload** is generated and bound to the booking record for ticket scanning.
+
+**3. Live Route & Fleet Tracking**
+- Admin location updates stream simulated GPS coordinates over WebSockets, drawing live marker movements on Google Maps for waiting riders.
 `,
         architecture: {
             image: "/shpn.png",
-            description: "The Bottleneck: Relying on standard database queries (MongoDB) for transient state (like a user simply clicking a seat) introduces latency and hammering the DB causes race conditions.\n\n### The Solution\nI decoupled the data layer. I built a dedicated WebSocket server utilizing an in-memory state object for \"soft locking.\" When User A clicks a seat, the Node server instantly broadcasts that lock to User B via Socket.IO before a database write ever occurs.\n\n### The Trade-off\nBy keeping transient state in memory, I traded higher Node server memory overhead for a massive reduction in database load and near-zero latency for the end user. MongoDB is strictly reserved as the final source of truth upon successful Stripe checkout."
+            description: "The Bottleneck: Hitting MongoDB for transient seat clicks caused severe database latency and race conditions.\n\n### The Solution\nDecoupled transient state. A Socket.IO server broadcasts soft-locks instantly across active sockets, reserving MongoDB strictly for finalized Stripe payment checkouts."
         },
         videoUrl: "/shuttlevideo.mp4"
     },
