@@ -6,6 +6,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Github, ExternalLink } from "lucide-react";
 
+import Image from "next/image";
+import { getAssetPath } from "@/lib/utils";
+
 interface ProjectCardProps {
     project: ProjectData;
     index: number;
@@ -32,29 +35,29 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!cardRef.current) return;
         const rect = cardRef.current.getBoundingClientRect();
-
-        // Spotlight Coordinates
-        setMousePosition({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
-        });
-
-        // 3D Tilt Coordinates
         const width = rect.width;
         const height = rect.height;
+
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
-        x.set(mouseX / width - 0.5);
-        y.set(mouseY / height - 0.5);
+
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+
+        x.set(xPct);
+        y.set(yPct);
+        setMousePosition({ x: mouseX, y: mouseY });
     };
 
+    const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => {
         setIsHovered(false);
         x.set(0);
         y.set(0);
     };
 
-    const handleCardClick = () => {
+    const handleCardClick = (e: React.MouseEvent) => {
+        if ((e.target as HTMLElement).closest('a, button')) return;
         router.push(`/projects/${project.id}`);
     };
 
@@ -62,7 +65,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         <motion.div
             ref={cardRef}
             onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHovered(true)}
+            onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -93,6 +96,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                     className="relative z-10 w-full rounded-[23px] bg-white/90 dark:bg-zinc-950/60 p-6 md:p-8 flex flex-col gap-8 shadow-xl shadow-zinc-200/50 dark:shadow-2xl"
                     style={{ transform: "translateZ(10px)", transformStyle: "preserve-3d" }}
                 >
+                    {/* Separate Cover Image Banner */}
+                    {project.coverImage && (
+                        <div className="relative w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 group/img shadow-lg mb-2">
+                            <Image
+                                src={getAssetPath(project.coverImage)}
+                                alt={project.title}
+                                width={800}
+                                height={450}
+                                className="w-full h-auto object-cover group-hover/img:scale-[1.02] transition-transform duration-500"
+                                priority={index === 0}
+                            />
+                        </div>
+                    )}
+
                     {/* Header / Title Row */}
                     <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                         <div className="max-w-2xl">

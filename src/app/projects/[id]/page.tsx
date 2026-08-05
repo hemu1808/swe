@@ -9,6 +9,9 @@ import { SystemDesignInteractive } from "@/components/projects/SystemDesignInter
 import { ArchitectureBlueprint, VideoWalkthrough } from "@/components/projects/ProjectVisuals";
 import { TechnicalInsight } from "@/components/projects/TechnicalInsight";
 
+import Image from "next/image";
+import { getAssetPath } from "@/lib/utils";
+
 import type { Metadata } from "next";
 
 export const generateStaticParams = async () => {
@@ -151,12 +154,35 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
                 </div>
                 <SystemDesignInteractive projectId={project.id} />
 
-                <div id="video" className="mt-20 scroll-mt-28">
-                    <VideoWalkthrough
-                        videoUrl={project.videoUrl}
-                        categoryColor={projectColor}
-                        poster={project.architecture?.image}
-                    />
+                <div id="video" className="mt-20 scroll-mt-28 border-t border-zinc-200 dark:border-white/10 pt-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                        {/* Cover Image Banner (Beside Video) */}
+                        {project.coverImage && (
+                            <div>
+                                <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2">
+                                    <Star className="w-5 h-5 text-blue-500" /> Platform Showcase
+                                </h3>
+                                <div className="relative w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 shadow-xl group">
+                                    <Image
+                                        src={getAssetPath(project.coverImage)}
+                                        alt={`${project.title} Interface Banner`}
+                                        width={800}
+                                        height={450}
+                                        className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-500"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Video Walkthrough */}
+                        <div className="w-full">
+                            <VideoWalkthrough
+                                videoUrl={project.videoUrl}
+                                categoryColor={projectColor}
+                                poster={project.architecture?.image}
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <TechnicalInsight insights={project.insights} projectColor={projectColor} />

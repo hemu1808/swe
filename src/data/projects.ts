@@ -9,6 +9,7 @@ export interface ProjectData {
     status: string;
     focus: string;
     description: string;
+    coverImage?: string;
     highlights: string[];
     techStack: string[];
     gitLink?: string;
@@ -44,6 +45,7 @@ export const projectsData: ProjectData[] = [
         role: "Full-Stack AI",
         status: "Active",
         focus: "Semantic & Lexical Hybrid RAG",
+        coverImage: "/hgpt_cover.png",
         description: "A production-grade RAG platform enabling secure multi-document reasoning over 10,000+ internal documents via hybrid vector search, Reciprocal Rank Fusion, and local Ollama inference.",
         highlights: [
             "Engineered a hybrid retrieval engine pairing ChromaDB vector embeddings with BM25 keyword search, fused via Reciprocal Rank Fusion.",
@@ -117,6 +119,7 @@ The HemGPT RAG System decouples ingestion, hybrid retrieval, and generation to h
         role: "Systems & Infrastructure",
         status: "Completed",
         focus: "Distributed Consensus & Runtime",
+        coverImage: "/deploysh_cover.png",
         description: "A high-availability container orchestration engine written natively in Go, leveraging embedded Raft consensus, custom CNI networking, and CRI-O/containerd OCI runtimes.",
         highlights: [
             "Architected an Active-Passive high-availability control plane in Go using embedded HashiCorp Raft for distributed consensus, log replication, and FSM snapshots with zero external DB dependency.",
@@ -160,6 +163,7 @@ AuraDeploy is structured as a decoupled distributed control plane and container 
         role: "AI Systems",
         status: "Active",
         focus: "Medical Imaging & Clinical RAG",
+        coverImage: "/sunx_cover.png",
         description: "An AI radiography platform integrating a DenseNet-121 vision model for chest X-ray pathology detection with a pgvector RAG engine to surface evidence-based clinical treatment guidelines.",
         highlights: [
             "Built a DICOM image processing and HIPAA-aware PHI anonymization pipeline using `pydicom` and `MONAI` for automated medical image ETL.",
@@ -188,17 +192,22 @@ SunX combines high-throughput vision model inference with vector-based medical r
 
 **3. WebGL Imaging Interface**
 - The **Next.js** frontend embeds **Cornerstone.js**, rendering DICOM pixel arrays directly on the GPU via WebGL for instantaneous window-leveling and annotation.
-`
+`,
+        architecture: {
+            image: "/sunx_cover.png",
+            description: "The Clinical Challenge: Raw pathology detection scores leave physicians to look up treatment protocols manually.\n\n### The Solution\nIntegrated DenseNet-121 visual findings with a pgvector LangChain RAG engine, surfacing AHA/ACC & IDSA guideline-backed treatment recommendations with source citations."
+        }
     },
     {
         id: "transit-reservation",
         title: "ShuttleNow: Real-Time Shuttle Booking Platform",
         category: "Full Stack",
         duration: "2024",
-        role: "Full-Stack Backend",
+        role: "Full-Stack Backend Lead",
         status: "Live",
         focus: "Concurrency & WebSockets",
-        description: "A real-time transit reservation engine featuring Socket.IO seat soft-locking, live Google Maps route tracking, Stripe payment processing, and digital QR tickets.",
+        coverImage: "/shuttle_cover.png",
+        description: "A real-time transit reservation engine featuring Socket.IO seat soft-locking, live Google Maps route tracking, Stripe payments, and digital QR tickets.",
         highlights: [
             "Eliminated double-booking race conditions by 95% using Socket.IO in-memory soft-locks that instantly reserve selected seats across all connected clients before database writes occur.",
             "Integrated Google Maps Directions API for live route drawing and Google Places Autocomplete for dynamic admin location entry.",
