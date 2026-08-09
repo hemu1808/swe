@@ -180,6 +180,19 @@ AuraDeploy is structured as a decoupled distributed control plane and container 
         systemDesign: `
 ### System Architecture
 
+\`\`\`mermaid
+flowchart LR
+    A[DICOM Upload] --> B[Anonymize + ETL\npydicom / MONAI]
+    B --> C[DenseNet-121\nTriton Inference Server]
+    C --> D[Pathology Scores\n+ Findings]
+    D --> E[LangChain RAG Engine]
+    E --> F[(pgvector\nClinical Guidelines)]
+    E --> G[Evidence-Based\nTreatment Plan]
+    C --> H[Cornerstone.js\nDICOM Viewer]
+    H --> I[Next.js Dashboard]
+    G --> I
+\`\`\`
+
 SunX combines high-throughput vision model inference with vector-based medical retrieval.
 
 **1. Visual Inference Pipeline**

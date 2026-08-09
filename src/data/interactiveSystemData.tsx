@@ -200,6 +200,72 @@ export const getSystemData = (projectId: string): SystemData | null => {
                 }
             };
             
+        case "sunx-radiography":
+            return {
+                nodes: [
+                    n("dicom", "DICOM Upload", 50, 100),
+                    n("etl", "Anonymize & ETL", 200, 100, "bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 rounded-lg shadow-md dark:shadow-xl text-xs font-bold uppercase tracking-wide px-4 py-2"),
+                    n("densenet", "DenseNet-121 Triton", 350, 100, "bg-blue-50 dark:bg-blue-900/40 border-blue-300 dark:border-blue-500/50 text-blue-700 dark:text-blue-100 rounded-lg shadow-md dark:shadow-xl text-xs font-bold uppercase tracking-wide px-4 py-2"),
+                    n("rag", "LangChain RAG", 500, 50, "bg-purple-50 dark:bg-purple-900/40 border-purple-300 dark:border-purple-500/50 text-purple-700 dark:text-purple-100 rounded-lg shadow-md dark:shadow-xl text-xs font-bold uppercase tracking-wide px-4 py-2"),
+                    n("pgvector", "pgvector Guidelines", 650, 50),
+                    n("viewer", "Cornerstone.js Viewer", 500, 180),
+                    n("dash", "Next.js Dashboard", 650, 180, "bg-green-50 dark:bg-green-900/40 border-green-300 dark:border-green-500/50 text-green-700 dark:text-green-100 rounded-lg shadow-md dark:shadow-xl text-xs font-bold uppercase tracking-wide px-4 py-2")
+                ] as Node[],
+                edges: [
+                    e("e1", "dicom", "etl", true, "#3b82f6"),
+                    e("e2", "etl", "densenet", true, "#3b82f6"),
+                    e("e3", "densenet", "rag", true, "#a855f7"),
+                    e("e4", "rag", "pgvector"),
+                    e("e5", "densenet", "viewer"),
+                    e("e6", "viewer", "dash", true, "#10b981"),
+                    e("e7", "rag", "dash", true, "#10b981")
+                ] as Edge[],
+                panelMap: {
+                    "dicom": {
+                        title: "DICOM Image Ingestion",
+                        tech: ["Next.js", "FastAPI", "Upload API"],
+                        description: "Receives raw medical imaging DICOM files securely, enforcing HIPAA compliance and preliminary header validation before queueing pipeline tasks.",
+                        icon: Smartphone
+                    },
+                    "etl": {
+                        title: "PHI Anonymization & MONAI ETL",
+                        tech: ["pydicom", "MONAI", "Python"],
+                        description: "Strips protected health information (PHI) from DICOM metadata headers and formats imaging tensors for optimal GPU model processing.",
+                        icon: Shield
+                    },
+                    "densenet": {
+                        title: "DenseNet-121 Triton Vision Inference",
+                        tech: ["PyTorch", "NVIDIA Triton", "DenseNet-121"],
+                        description: "Runs fine-tuned 14-class pathology classification on Triton Inference Server with model parallelism and sub-second classification latencies.",
+                        icon: Cpu
+                    },
+                    "rag": {
+                        title: "LangChain Clinical Decision RAG Engine",
+                        tech: ["LangChain", "FastAPI", "Python"],
+                        description: "Extracts predicted pathology classes and queries vector store to retrieve evidence-based clinical treatment guidelines (AHA/ACC, IDSA/ATS).",
+                        icon: Workflow
+                    },
+                    "pgvector": {
+                        title: "PostgreSQL + pgvector Guideline Index",
+                        tech: ["PostgreSQL", "pgvector", "Embeddings"],
+                        description: "Stores vector embeddings of peer-reviewed clinical guidelines, facilitating semantic search over medical literature with zero external data leakage.",
+                        icon: Database
+                    },
+                    "viewer": {
+                        title: "Cornerstone.js WebGL DICOM Viewer",
+                        tech: ["Cornerstone.js", "WebGL", "HTML5 Canvas"],
+                        description: "Renders medical DICOM arrays directly on client GPU via WebGL, allowing physicians to perform zero-latency pan, zoom, and window-level contrast adjustments.",
+                        icon: Layers
+                    },
+                    "dash": {
+                        title: "Next.js Clinical Dashboard",
+                        tech: ["Next.js", "React", "Tailwind CSS"],
+                        description: "Unified physician workbench displaying visual X-ray findings alongside guideline-backed treatment plans and clickable source citations.",
+                        icon: Zap
+                    }
+                }
+            };
+
         default:
             return null;
     }

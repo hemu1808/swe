@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ScrollControls, Scroll, useScroll, Stars, Float, Sparkles } from "@react-three/drei";
+import { Stars, Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 import { useTheme } from "next-themes";
 import { useMounted } from "@/lib/useMounted";
@@ -56,20 +56,23 @@ const BackgroundPyramid = () => {
     );
 };
 
-// --- The Camera Controller ---
+// --- The Camera Controller synced with window scroll ---
 function WebGLJourney() {
-    const scroll = useScroll();
     const { camera } = useThree();
     const groupRef = useRef<THREE.Group>(null);
 
     useFrame(() => {
+        if (typeof window === "undefined") return;
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollOffset = scrollHeight > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollHeight)) : 0;
+
         // Move camera forward based on scroll
-        const zTarget = 5 - scroll.offset * 120;
+        const zTarget = 5 - scrollOffset * 120;
         camera.position.z = THREE.MathUtils.lerp(camera.position.z, zTarget, 0.1);
 
         if (groupRef.current) {
             // Slight rotation of the universe as you scroll
-            groupRef.current.rotation.z = scroll.offset * Math.PI * 0.2;
+            groupRef.current.rotation.z = scrollOffset * Math.PI * 0.2;
         }
     });
 
@@ -87,28 +90,13 @@ function WebGLJourney() {
     );
 }
 
-// --- HTML Overlay Content ---
-function HTMLContent() {
-    return (
-        <Scroll html style={{ width: '100vw' }}>
-            <HeroSection />
-            <FoundationSection />
-            <ArsenalSection />
-            <StrategicImpactSection />
-            <BentoShowcase />
-            <CreativeSection />
-            <EndJourneySection />
-        </Scroll>
-    );
-}
-
 export default function ShowcasePage() {
     const { resolvedTheme } = useTheme();
     const mounted = useMounted();
 
     if (!mounted) {
         return (
-            <div className="relative h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden selection:bg-blue-500/30 font-sans transition-colors duration-500">
+            <div className="relative min-h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden selection:bg-blue-500/30 font-sans transition-colors duration-500">
                 <Navbar />
             </div>
         );
@@ -117,9 +105,27 @@ export default function ShowcasePage() {
     const canvasBg = resolvedTheme === "light" ? "#f8fafc" : "#050505";
 
     return (
-        <div className="relative h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden selection:bg-blue-500/30 font-sans transition-colors duration-500">
+        <div className="relative min-h-screen w-full bg-slate-50 dark:bg-[#050505] selection:bg-blue-500/30 font-sans transition-colors duration-500">
             {/* Global Floating Dock Header */}
             <Navbar />
+
+            {/* Fixed Full Screen WebGL Canvas Background */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 1.5]}>
+                    <color attach="background" args={[canvasBg]} />
+
+                    {/* Immersive Fog */}
+                    <fog attach="fog" args={[canvasBg, 10, 45]} />
+
+                    <ambientLight intensity={resolvedTheme === "light" ? 0.8 : 0.2} />
+                    <directionalLight position={[10, 10, 5]} intensity={resolvedTheme === "light" ? 1.5 : 1} />
+
+                    <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+                    <Sparkles count={300} scale={20} size={3} speed={0.4} opacity={resolvedTheme === "light" ? 0.3 : 0.8} color={resolvedTheme === "light" ? "#3b82f6" : "#a78bfa"} />
+
+                    <WebGLJourney />
+                </Canvas>
+            </div>
 
             {/* Down Arrow Guide */}
             <motion.div
@@ -134,29 +140,17 @@ export default function ShowcasePage() {
                 </div>
             </motion.div>
 
-            {/* Full Screen WebGL Canvas */}
-            <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 1.5]}>
-                <color attach="background" args={[canvasBg]} />
-
-                {/* Immersive Fog */}
-                <fog attach="fog" args={[canvasBg, 10, 45]} />
-
-                <ambientLight intensity={resolvedTheme === "light" ? 0.8 : 0.2} />
-                <directionalLight position={[10, 10, 5]} intensity={resolvedTheme === "light" ? 1.5 : 1} />
-
-                <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
-                <Sparkles count={300} scale={20} size={3} speed={0.4} opacity={resolvedTheme === "light" ? 0.3 : 0.8} color={resolvedTheme === "light" ? "#3b82f6" : "#a78bfa"} />
-
-                {/* 
-                  ScrollControls manages the scroll state. 
-                  Pages=8.5 means the scroll height is 8.5x the viewport height. 
-                */}
-                <ScrollControls pages={8.5} damping={0.2}>
-                    <WebGLJourney />
-                    <HTMLContent />
-                </ScrollControls>
-
-            </Canvas>
+            {/* HTML Content Overlay natively rendered in standard DOM */}
+            <main id="main-content" className="relative z-10 w-full">
+                <HeroSection />
+                <FoundationSection />
+                <ArsenalSection />
+                <StrategicImpactSection />
+                <BentoShowcase />
+                <CreativeSection />
+                <EndJourneySection />
+            </main>
         </div>
     );
 }
+

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
+import { Github, Linkedin, Mail, Menu, Search, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { getAssetPath, SITE_CONFIG } from "@/lib/utils";
 
@@ -57,7 +57,7 @@ export const Navbar = () => {
       initial={{ y: -50, opacity: 0, x: "-50%" }}
       animate={{ y: 0, opacity: 1, x: "-50%" }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="fixed top-6 left-1/2 z-50 flex items-center justify-between gap-6 md:gap-12 rounded-full border border-zinc-200 dark:border-white/10 bg-white/80 dark:bg-zinc-950/60 px-8 py-4 backdrop-blur-xl shadow-lg dark:shadow-2xl"
+      className="fixed top-6 left-1/2 z-50 flex items-center justify-between gap-4 md:gap-8 rounded-full border border-zinc-200 dark:border-white/10 bg-white/80 dark:bg-zinc-950/60 px-6 md:px-8 py-3.5 backdrop-blur-xl shadow-lg dark:shadow-2xl max-w-[95vw]"
     >
       {/* Logo */}
       <Link href="/" className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white shrink-0">
@@ -67,18 +67,9 @@ export const Navbar = () => {
       {/* Desktop Separator */}
       <div className="h-4 w-px bg-zinc-300 dark:bg-white/20 hidden md:block" />
 
-      {/* Mobile Menu Toggle */}
-      <button
-        className="md:hidden ml-auto text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Close menu" : "Open menu"}
-        aria-expanded={isOpen}
-      >
-        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
 
       {/* Desktop Navigation */}
-      <nav className="hidden gap-8 md:flex items-center" aria-label="Main navigation">
+      <nav className="hidden gap-6 md:flex items-center" aria-label="Main navigation">
         {navItems.map((item) => (
           <Link
             key={item.name}
@@ -122,7 +113,7 @@ export const Navbar = () => {
       </AnimatePresence>
 
       {/* Desktop Socials & CTA */}
-      <div className="hidden md:flex items-center gap-6 shrink-0 border-l border-zinc-200 dark:border-white/10 pl-6 ml-4">
+      <div className="hidden md:flex items-center gap-5 shrink-0 border-l border-zinc-200 dark:border-white/10 pl-5 ml-2">
         <SocialLinks iconSize={18} />
         <a
           href={getAssetPath("/resume.pdf")}
@@ -133,7 +124,7 @@ export const Navbar = () => {
         <ThemeToggle />
       </div>
 
-      {/* Mobile Socials & Theme Toggle */}
+      {/* Mobile Theme Toggle */}
       <div className="flex md:hidden items-center gap-3">
         <ThemeToggle />
       </div>

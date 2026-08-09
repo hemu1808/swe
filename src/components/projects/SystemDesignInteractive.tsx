@@ -34,6 +34,13 @@ export function SystemDesignInteractive({ projectId }: { projectId: string }) {
 
     useEffect(() => {
         if (!data) return;
+        setNodes(initialNodes);
+        setEdges(data.edges || []);
+        setActiveNodeId(data.nodes[0]?.id || null);
+    }, [projectId, data, initialNodes, setNodes, setEdges]);
+
+    useEffect(() => {
+        if (!data) return;
         
         // Dynamically update node styling on selection
         setNodes((prevNodes) =>
@@ -51,9 +58,12 @@ export function SystemDesignInteractive({ projectId }: { projectId: string }) {
         );
     }, [activeNodeId, data, setNodes]);
 
-    if (!data) return null; // Component hides if no data mapped for ID
+    if (!data || !data.nodes || data.nodes.length === 0) return null; // Component hides if no data mapped for ID
 
-    const activePanelData = data.panelMap[activeNodeId || data.nodes[0].id];
+    const fallbackId = data.nodes[0]?.id;
+    const activePanelData = data.panelMap[activeNodeId || fallbackId] || (fallbackId ? data.panelMap[fallbackId] : null);
+    if (!activePanelData) return null;
+
     const ActiveIcon = activePanelData.icon;
 
     const bgColor = mounted && resolvedTheme === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.1)";

@@ -5,6 +5,7 @@ import { ShaderBackground } from "@/components/projects/ShaderBackground";
 import { ArrowLeft, Github, Globe, LayoutTemplate, FileQuestion, Star, Network } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
+import { Mermaid } from "@/components/Mermaid";
 import { SystemDesignInteractive } from "@/components/projects/SystemDesignInteractive";
 import { ArchitectureBlueprint, VideoWalkthrough } from "@/components/projects/ProjectVisuals";
 import { TechnicalInsight } from "@/components/projects/TechnicalInsight";
@@ -49,6 +50,23 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
     };
 
     const projectColor = categoryColorMap[project.category] || "blue";
+
+    const markdownComponents = {
+        code({ className, children, ...props }: React.ComponentPropsWithoutRef<'code'> & { className?: string }) {
+            const match = /language-(\w+)/.exec(className || '');
+            const isMermaid = match && match[1] === 'mermaid';
+            const codeString = String(children).replace(/\n$/, '');
+
+            if (isMermaid) {
+                return <Mermaid chart={codeString} />;
+            }
+            return (
+                <code className={className} {...props}>
+                    {children}
+                </code>
+            );
+        },
+    };
 
     return (
         <div className="relative min-h-screen font-sans text-zinc-900 dark:text-zinc-50 selection:bg-blue-500/30">
@@ -102,7 +120,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
                             <FileQuestion className="w-5 h-5 text-blue-500" /> Rationale
                         </h3>
                         <div className="prose dark:prose-invert max-w-none prose-p:text-lg prose-p:text-zinc-600 dark:prose-p:text-zinc-300 prose-p:leading-relaxed prose-strong:text-zinc-900 dark:prose-strong:text-white prose-strong:font-bold">
-                            <ReactMarkdown>{project.whyContent}</ReactMarkdown>
+                            <ReactMarkdown components={markdownComponents}>{project.whyContent}</ReactMarkdown>
                         </div>
                     </div>
                 )}
@@ -146,13 +164,13 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
                             <div className="prose dark:prose-invert max-w-none prose-h3:text-lg prose-h3:font-bold prose-h3:text-zinc-900 dark:prose-h3:text-white prose-h3:mb-4 prose-h3:mt-8 prose-p:text-zinc-600 dark:prose-p:text-zinc-400 prose-p:leading-relaxed prose-li:text-zinc-600 dark:prose-li:text-zinc-400 prose-strong:text-zinc-900 dark:prose-strong:text-zinc-200">
                                 <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2"><Network className="w-5 h-5 text-blue-500" /> Architecture Details</h3>
                                 <div className="mt-4">
-                                    <ReactMarkdown>{project.systemDesign.replace('### System Architecture', '')}</ReactMarkdown>
+                                    <ReactMarkdown components={markdownComponents}>{project.systemDesign.replace('### System Architecture', '')}</ReactMarkdown>
                                 </div>
                             </div>
                         )}
                     </div>
                 </div>
-                <SystemDesignInteractive projectId={project.id} />
+                <SystemDesignInteractive key={project.id} projectId={project.id} />
 
                 <div id="video" className="mt-20 scroll-mt-28 border-t border-zinc-200 dark:border-white/10 pt-16">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
